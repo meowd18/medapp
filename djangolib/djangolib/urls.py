@@ -17,13 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from application.views import accueil
-from authentification.views import connexion, deco
+from authentification.views import connexion, deco, inscription
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("accueil", accueil),
+    path("accueil", accueil, name="accueil"),
     path("", connexion, name="connexion"),
     path("deco", deco, name="deco"),
+    path("inscription", inscription, name="inscription")
 ]
 
 

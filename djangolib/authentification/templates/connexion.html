@@ -1,18 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Connexion</title>
 </head>
 <body>
     {{message}}
     <form method="post">
         {% csrf_token %}
         <input type="text" name="username" required>
-        <input type="text" name="mdp" required>
+        <input type="password" name="mdp" required>
         <input type="submit">
     </form>
+    <p>Vous n'avez pas de compte ?
+        Trop nul, inscrivez-vous
+        en cliquant sur ce lien:</p>
+    <p><a href="{% url 'inscription' %}">M'inscrire</a></p>
+
 </body>
 </html>
 
