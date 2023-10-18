@@ -1,12 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <title>Stress</title>
-<p>Remplissez le formulaire suivant
-    en indiquant la fréquence avec laquelle vous avez ressenti ou vécu,
-    au cours des deux dernières semaines,
-    les symptômes décrits.
-    Additionnez les valeurs que vous avez attribuées pour chaque symptôme
-    afin de déterminer l’impact du stress dans votre vie actuelle.</p>
+<p>Remplissez le formulaire suivant en indiquant la fréquence avec laquelle vous avez ressenti ou vécu, au cours des deux dernières semaines, les symptômes décrits. Additionnez les valeurs que vous avez attribuées pour chaque symptôme afin de déterminer l’impact du stress dans votre vie actuelle.</p>
 <p>
     0: Ce symptôme n’est pas apparu au cours des deux dernières semaines <br>
     1: Ce symptôme est apparu une ou deux fois seulement au cours des deux dernières semaines<br>
@@ -16,6 +11,41 @@
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
+
+    <!-- Champ pour afficher le total -->
+    <p>Total de l'impact du stress dans votre vie actuelle :
+        <span id="total_de_stress">0</span>
+    </p>
+
     <button type="submit">Enregistrer</button>
 </form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Fonction pour recalculer le champ total et le mettre à jour
+    function updateTotal() {
+        var total = 0;
+
+        // Obtenir une liste de tous les champs de type select
+        var selectFields = document.querySelectorAll('select');
+
+        // Itérer sur les champs de sélection et ajouter leur valeur au total
+        for (var i = 0; i < selectFields.length; i++) {
+            var value = parseInt(selectFields[i].value) || 0;
+            total += value;
+        }
+
+        // Mettre à jour le champ total
+        document.getElementById('total_de_stress').textContent = total;
+    }
+
+    // Appeler la fonction de mise à jour au chargement de la page pour le calcul initial
+    window.addEventListener('load', updateTotal);
+
+    // Lorsqu'un champ select est modifié, appeler la fonction de mise à jour
+    var selectFields = document.querySelectorAll('select');
+    for (var i = 0; i < selectFields.length; i++) {
+        selectFields[i].addEventListener('change', updateTotal);
+    }
+</script>
 {% endblock %}

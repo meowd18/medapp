@@ -24,7 +24,7 @@ class ColStress(models.Model):
         (5, '5'),
         (10, '10'),
     )
-    user_id = models.CharField('id', primary_key=True, blank=True, null=False, max_length=10)  # The composite primary key (user_id, date) found, that is not supported. The first column is selected.
+    user_id = models.CharField('id Patient', blank=True, null=False, max_length=10)  # The composite primary key (user_id, date) found, that is not supported. The first column is selected.
     date = models.TextField(blank=True, null=True)
     irritabilité = models.IntegerField(choices=CHOIX, blank=True, null=True)
     sentiments_depressifs = models.IntegerField("sentiments dépressifs", choices=CHOIX, blank=True, null=True)
@@ -70,14 +70,15 @@ class ColStress(models.Model):
     difficulte_a_sendormir = models.IntegerField("difficulté à s'endormir", choices=CHOIX, blank=True, null=True)
     difficulte_a_se_remettre_dun_evenement_contrariant = models.IntegerField("difficulté à se remettre d'un évènement", choices=CHOIX, blank=True, null=True)
     mains_moites = models.IntegerField(choices=CHOIX, blank=True, null=True)
-    total_de_limpact_du_stress_dans_votre_vie_actuelle = models.IntegerField("total de l'impact du stress dans votre vie actuelle", blank=True, null=True)
+    total_de_limpact_du_stress_dans_votre_vie_actuelle = models.IntegerField()
+    #total_de_limpact_du_stress_dans_votre_vie_actuelle = models.IntegerField("total de l'impact du stress dans votre vie actuelle", blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'col_stress'
 
 class ColSante(models.Model):
-    user_id = models.CharField("id", primary_key=True, blank=True, null=False, max_length=10)  # The composite primary key (user_id, date) found, that is not supported. The first column is selected.
+    user_id = models.CharField("id Patient", blank=True, null=False, max_length=10)  # The composite primary key (user_id, date) found, that is not supported. The first column is selected.
     date = models.TextField(blank=True, null=True)
     poids = models.IntegerField(blank=True, null=True)
     tour_de_taille_en_cm = models.IntegerField(blank=True, null=True)
