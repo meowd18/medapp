@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<title>Comptes</title>
+
+<h1>Modification de votre mot de passe</h1>
+<form method = "post">
+    {{ message }}<br>
+    {% csrf_token %}
+    <label>Indiquez votre ancien mot de passe</label><br>
+    <input type="password" required name="ancienMDP"><br>
+
+    <label>Choisissez votre nouveau mot de passe</label><br>
+    <input type="password" required pattern={{ regexMDP }} name="nouveauMDP1"><br>
+
+    <label>Confirmez votre nouveau mot de place</label><br>
+    <input type="password" required pattern={{ regexMDP }} name="nouveauMDP2"><br>
+    <input type="submit">
+</form>
+
+{% endblock %}
+

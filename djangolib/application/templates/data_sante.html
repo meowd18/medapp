@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<title>Santé générale</title>
+<p>Remplissez le formulaire suivant</p>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Enregistrer</button>
+</form>
+{% endblock %}
