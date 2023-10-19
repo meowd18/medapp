@@ -1,27 +1,52 @@
 {% extends 'base.html' %}
 {% block content %}
 <title>Stress</title>
-<p>Remplissez le formulaire suivant en indiquant la fréquence avec laquelle vous avez ressenti ou vécu, au cours des deux dernières semaines, les symptômes décrits. Additionnez les valeurs que vous avez attribuées pour chaque symptôme afin de déterminer l’impact du stress dans votre vie actuelle.</p>
+<h1>Impact du stress dans votre vie actuelle</h1>
+<p>Remplissez le formulaire suivant en indiquant la fréquence avec laquelle vous avez ressenti ou vécu, au cours des deux dernières semaines, les symptômes décrits.</p>
 <p>
     0: Ce symptôme n’est pas apparu au cours des deux dernières semaines <br>
     1: Ce symptôme est apparu une ou deux fois seulement au cours des deux dernières semaines<br>
     5: Ce symptôme est apparu plusieurs fois au cours des deux dernières semaines<br>
     10: Ce symptôme est apparu presque continuellement au cours des deux dernières semaines<br>
 </p>
-<form method="post">
+<form id="formContainer" method="post">
     {% csrf_token %}
-    <div id="formContainer">
-        {{ form.as_p }}
+    {{ form.as_p }}
 
         <!-- Champ pour afficher le total -->
         <p>Total de l'impact du stress dans votre vie actuelle :
             <span id="total_de_stress">0</span>
         </p>
 
-        <button id="nextBtn" type="button">Suivant</button>
-        <button id="submitBtn" type="submit" style="display: none">Enregistrer</button>
+    <div id="button-container">
+        <div id="nav-buttons">
+            <button type="button" id="prevBtn" style="display: none;">Précédent</button>
+            <button type="button" id="nextBtn">Suivant</button>
+        </div>
+        <button type="submit" id="submitBtn" style="display: none;">Envoyer</button>
     </div>
 </form>
+
+<style>
+  /* Style pour les sous-titres */
+  .subtitle {
+    font-size: 1em;
+    margin-bottom: 10px;
+  }
+
+  #button-container {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  #nav-buttons {
+    display: flex;
+  }
+
+  #nav-buttons button {
+    margin-right: 10px;
+  }
+</style>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -44,74 +69,127 @@ function updateTotal() {
     document.getElementById('total_de_stress').textContent = total;
 }
 
-    // Appeler la fonction de mise à jour au chargement de la page pour le calcul initial
-    window.addEventListener('load', updateTotal);
+// Appeler la fonction de mise à jour au chargement de la page pour le calcul initial
+window.addEventListener('load', updateTotal);
 
-    // Lorsqu'un champ select est modifié, appeler la fonction de mise à jour
-    var selectFields = document.querySelectorAll('select');
-    for (var i = 0; i < selectFields.length; i++) {
-        selectFields[i].addEventListener('change', updateTotal);
+// Lorsqu'un champ select est modifié, appeler la fonction de mise à jour
+var selectFields = document.querySelectorAll('select');
+for (var i = 0; i < selectFields.length; i++) {
+    selectFields[i].addEventListener('change', updateTotal);
+}
+
+// Gestion du bouton "Précédent" et "Suivant"
+var currentGroup = 0;
+var fieldGroups = document.querySelectorAll('.field-group');
+var prevBtn = document.getElementById('prevBtn');
+var nextBtn = document.getElementById('nextBtn');
+var submitBtn = document.getElementById('submitBtn');
+
+prevBtn.addEventListener('click', function() {
+    fieldGroups[currentGroup].style.display = 'none';
+    currentGroup--;
+    if (currentGroup >= 0) {
+        fieldGroups[currentGroup].style.display = 'block';
+        nextBtn.style.display = 'block';
+        submitBtn.style.display = 'none';
     }
+    if (currentGroup === 0) {
+        prevBtn.style.display = 'none';
+    }
+});
 
-    // Gestion du bouton "Suivant"
-    var currentGroup = 0;
-    var fieldGroups = document.querySelectorAll('.field-group');
-    var nextBtn = document.getElementById('nextBtn');
-    var submitBtn = document.getElementById('submitBtn');
-
-    nextBtn.addEventListener('click', function() {
-        fieldGroups[currentGroup].style.display = 'none';
-        currentGroup++;
-        if (currentGroup < fieldGroups.length) {
-            fieldGroups[currentGroup].style.display = 'block';
-            if (currentGroup === fieldGroups.length - 1) {
-                nextBtn.style.display = 'none';
-                submitBtn.style.display = 'block';
-            }
+nextBtn.addEventListener('click', function() {
+    fieldGroups[currentGroup].style.display = 'none';
+    currentGroup++;
+    if (currentGroup < fieldGroups.length) {
+        fieldGroups[currentGroup].style.display = 'block';
+        prevBtn.style.display = 'block';
+        if (currentGroup === fieldGroups.length - 1) {
+            nextBtn.style.display = 'none';
+            submitBtn.style.display = 'block';
         }
-    });
+    }
+});
+
+// Initialisation de l'affichage
+if (currentGroup === 0) {
+    prevBtn.style.display = 'none';
+}
 </script>
 
 <script>
-    // On attend que la page soit complètement chargée
-    document.addEventListener('DOMContentLoaded', (event) => {
-        // On récupère le conteneur du formulaire
-        let formContainer = document.getElementById('formContainer');
-        // On récupère tous les champs du formulaire (chaque champ est dans un élément <p>)
-        let allFields = formContainer.querySelectorAll('p');
+  document.addEventListener('DOMContentLoaded', (event) => {
+    let formContainer = document.getElementById('formContainer');
+    let allFields = formContainer.querySelectorAll('p');
+    let fieldGroups = [];
+    let currentGroup = 0;
+    let groupSizes = [8, 8, 8, 8, 8, 7];
+    let currentIndex = 0;
+    let subtitles = [
+      "1/6",
+      "2/6",
+      "3/6",
+      "4/6",
+      "5/6",
+      "6/6"
+    ];
 
-        // Une liste pour stocker nos groupes de champs
-        let fieldGroups = [];
-        let currentGroup = 0;
+    let prevBtn = document.getElementById('prevBtn');
+    let nextBtn = document.getElementById('nextBtn');
+    let submitBtn = document.getElementById('submitBtn');
+    let buttonContainer = document.getElementById('button-container');
+    let navButtons = document.getElementById('nav-buttons');
 
-        for (let i = 0; i < allFields.length; i += 3) {
-            let fieldGroup = document.createElement('div');
-            fieldGroup.className = 'field-group';
-            fieldGroup.style.display = 'none';
-
-            for (let j = 0; j < 3; j++) {
-                if (i + j < allFields.length) {
-                    fieldGroup.appendChild(allFields[i + j]);
-                }
-            }
-
-            fieldGroups.push(fieldGroup);
-            formContainer.insertBefore(fieldGroup, document.getElementById("nextBtn"));
+    for (let i = 0; i < groupSizes.length; i++) {
+      let fieldGroup = document.createElement('div');
+      fieldGroup.className = 'field-group';
+      for (let j = 0; j < groupSizes[i]; j++) {
+        if (currentIndex < allFields.length) {
+          fieldGroup.appendChild(allFields[currentIndex]);
+          currentIndex++;
         }
+      }
+      fieldGroups.push(fieldGroup);
+      if (i > 0) {
+        fieldGroup.style.display = 'none';
+      }
+      formContainer.insertBefore(fieldGroup, buttonContainer);
+    }
 
+    let subtitleDiv = document.createElement('div');
+    subtitleDiv.className = 'subtitle';
+    subtitleDiv.textContent = subtitles[currentGroup];
+    formContainer.insertBefore(subtitleDiv, fieldGroups[currentGroup]);
+
+    nextBtn.addEventListener('click', () => {
+      fieldGroups[currentGroup].style.display = 'none';
+      currentGroup++;
+      if (currentGroup < fieldGroups.length) {
         fieldGroups[currentGroup].style.display = 'block';
-
-        document.getElementById('nextBtn').addEventListener('click', () => {
-            fieldGroups[currentGroup].style.display = 'none';
-            currentGroup++;
-            if (currentGroup < fieldGroups.length) {
-                fieldGroups[currentGroup].style.display = 'block';
-                if (currentGroup === fieldGroups.length - 1) {
-                    nextBtn.style.display = 'none';
-                    submitBtn.style.display = 'block';
-                }
-            }
-        });
+        subtitleDiv.textContent = subtitles[currentGroup];
+        prevBtn.style.display = 'block';
+        if (currentGroup === fieldGroups.length - 1) {
+          nextBtn.style.display = 'none';
+          submitBtn.style.display = 'block';
+        }
+      }
     });
+
+    prevBtn.addEventListener('click', () => {
+      if (currentGroup > 0) {
+        fieldGroups[currentGroup].style.display = 'none';
+        currentGroup--;
+        fieldGroups[currentGroup].style.display = 'block';
+        subtitleDiv.textContent = subtitles[currentGroup];
+        if (currentGroup === 0) {
+          prevBtn.style.display = 'none';
+        }
+        if (currentGroup < fieldGroups.length - 1) {
+          nextBtn.style.display = 'block';
+          submitBtn.style.display = 'none';
+        }
+      }
+    });
+  });
 </script>
 {% endblock %}
