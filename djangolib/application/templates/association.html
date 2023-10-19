@@ -15,13 +15,15 @@
         {% endfor %}
     </select>
 
-    <label>Choisissez le patient à associer :</label><br>
+    <br><label>Choisissez le patient à associer :</label><br>
     <select name="patient" id="patient">
         <option value="">Choisissez un patient</option>
         {% for patient in  listePatientsNonAssocies %}
         <option value={{ patient }}>{{ patient }}</option>
         {% endfor %}
     </select>
+    <br>
+    <br>
     <input type="submit">
 </form>
 

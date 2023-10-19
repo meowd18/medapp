@@ -75,26 +75,28 @@ def association(request):
     # 4- Dans cette liste déroulante on va afficher d'un côté les médecins
     # et de l'autre les patients filtrés (voir étapge 2)
     # https://developer.mozilla.org/fr/docs/Web/HTML/Element/select
-    medecinsID = [medecin.id for medecin in Utilisateur.objects.filter(role="medecin")]
-    patientsID = [patient.id for patient in Utilisateur.objects.filter(role="patient")]
+    medecinsID = [medecin.username for medecin in Utilisateur.objects.filter(role="medecin")]
+    patientsID = [patient.username for patient in Utilisateur.objects.filter(role="patient")]
     listePatientsAssocies = [ligne.idPatient for ligne in medecinPatient.objects.all()]
     listePatientsNonAssocies = [id for id in patientsID if id not in listePatientsAssocies]
     tableAssociation = medecinPatient.objects.all()
-    # Syntaxte équivalente
-    #for id in patientsID :
+    # Syntaxe équivalente
+    # for id in patientsID :
     #    if id not in listePatientsAssocies:
     #        patientsNonAssocies.append(id)
 
     if request.method == "POST":
-        medecin = request.POST["medecin"]
-        patient = request.POST["patient"]
-        medecinPatient(idMedecin = Utilisateur.objects.filter(id=medecin)[0],
-                       idPatient = Utilisateur.objects.filter(id=patient)[0]).save()
-        #medecinPatient.save()
+        medecin_username = request.POST["medecin"]
+        patient_username = request.POST["patient"]
+        medecin = Utilisateur.objects.get(username=medecin_username)
+        patient = Utilisateur.objects.get(username=patient_username)
+        medecinPatient(idMedecin=medecin, idPatient=patient).save()
+
     return render(request, "association.html",
-                  {"listePatientsNonAssocies" : listePatientsNonAssocies,
-                   "medecinsID" : medecinsID,
-                   "tableAssociation" : tableAssociation})
+                  {"listePatientsNonAssocies": listePatientsNonAssocies,
+                   "medecinsID": medecinsID,
+                   "tableAssociation": tableAssociation})
+
 
 #print(list(utilisateur.username for utilisateur in Utilisateur.objects.filter(role="medecin")))
 

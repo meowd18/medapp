@@ -74,7 +74,7 @@ class ColStress(models.Model):
     #total_de_limpact_du_stress_dans_votre_vie_actuelle = models.IntegerField("total de l'impact du stress dans votre vie actuelle", blank=True, null=True)
 
     class Meta:
-        managed = False
+        #managed = False
         db_table = 'col_stress'
 
 class ColSante(models.Model):
@@ -118,5 +118,5 @@ class ColSante(models.Model):
     durée_totale_des_malaises_en_minutes = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        #managed = False
         db_table = 'col_sante'
