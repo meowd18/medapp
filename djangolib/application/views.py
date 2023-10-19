@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import ColStressForm, ColSanteForm
+from .models import ColSante, ColStress
 from authentification.models import Utilisateur, medecinPatient
 from datetime import date
 
@@ -79,8 +80,8 @@ def association(request):
     # 4- Dans cette liste déroulante on va afficher d'un côté les médecins
     # et de l'autre les patients filtrés (voir étapge 2)
     # https://developer.mozilla.org/fr/docs/Web/HTML/Element/select
-        medecinsID = [medecin.username for medecin in Utilisateur.objects.filter(role="medecin")]
-        patientsID = [patient.username for patient in Utilisateur.objects.filter(role="patient")]
+        medecinsID = [medecin for medecin in Utilisateur.objects.filter(role="medecin")]
+        patientsID = [patient for patient in Utilisateur.objects.filter(role="patient")]
         listePatientsAssocies = [ligne.idPatient for ligne in medecinPatient.objects.all()]
         listePatientsNonAssocies = [id for id in patientsID if id not in listePatientsAssocies]
         tableAssociation = medecinPatient.objects.all()
@@ -89,17 +90,34 @@ def association(request):
         #    if id not in listePatientsAssocies:
         #        patientsNonAssocies.append(id)
 
+        # Je récupère les champs de la table formulaire santé
+        champsFormulaireSante = [field.name for field in ColSante._meta.get_fields()]
+        # Je récupère les ids des lignes de la table formulaire santé
+        idDesFormulaires = [valeur.id for valeur in ColSante.objects.all()]
+        # Je crée une liste qui contiendra les valeurs des lignes
+        # Il y a autant d'élément que de ligne, donc que d'ids récupéré
+        # FormulaireSante.objects.filter(id=id).values()[0].values()
+        # Dans le code ci-dessus je récupère la ligne ayant un certain id
+        # Ensuite je récupère les valeurs de la ligne .values
+        # Le 1er élément qui est le dictionnaire des colonnes/valeurs
+        # et enfin uniquement les valeurs
+        dataFormulaireSante = [ColSante.objects.filter(id=id).values()[0].values() for id in idDesFormulaires]
+
+
         if request.method == "POST":
             medecin_username = request.POST["medecin"]
             patient_username = request.POST["patient"]
             medecin = Utilisateur.objects.get(username=medecin_username)
             patient = Utilisateur.objects.get(username=patient_username)
+            print("medecin", type(medecin), medecin)
             medecinPatient(idMedecin=medecin, idPatient=patient).save()
-
+            return redirect("association")
         return render(request, "association.html",
                       {"listePatientsNonAssocies": listePatientsNonAssocies,
                        "medecinsID": medecinsID,
-                       "tableAssociation": tableAssociation})
+                       "tableAssociation": tableAssociation,
+                       "dataFormulaireSante" : dataFormulaireSante,
+                       "champsFormulaireSante" : champsFormulaireSante})
 
 
 #print(list(utilisateur.username for utilisateur in Utilisateur.objects.filter(role="medecin")))
