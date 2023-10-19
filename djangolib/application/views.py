@@ -69,33 +69,37 @@ else:
 
 @login_required
 def association(request):
+    if request.user.role == "patient":
+        return redirect ("accueil") #ou autre page disant que fais-tu là
+    else:
+    #return render (request, "page en question")
     # 1- Récupérer la liste des id des médecins et des patients
     # 2- Ensuite on ne garde que les patients qui ne sont pas dans la table medecinPatient
     # 3- On créé ensuite un template qui contiendra une liste déroulante
     # 4- Dans cette liste déroulante on va afficher d'un côté les médecins
     # et de l'autre les patients filtrés (voir étapge 2)
     # https://developer.mozilla.org/fr/docs/Web/HTML/Element/select
-    medecinsID = [medecin.username for medecin in Utilisateur.objects.filter(role="medecin")]
-    patientsID = [patient.username for patient in Utilisateur.objects.filter(role="patient")]
-    listePatientsAssocies = [ligne.idPatient for ligne in medecinPatient.objects.all()]
-    listePatientsNonAssocies = [id for id in patientsID if id not in listePatientsAssocies]
-    tableAssociation = medecinPatient.objects.all()
-    # Syntaxe équivalente
-    # for id in patientsID :
-    #    if id not in listePatientsAssocies:
-    #        patientsNonAssocies.append(id)
+        medecinsID = [medecin.username for medecin in Utilisateur.objects.filter(role="medecin")]
+        patientsID = [patient.username for patient in Utilisateur.objects.filter(role="patient")]
+        listePatientsAssocies = [ligne.idPatient for ligne in medecinPatient.objects.all()]
+        listePatientsNonAssocies = [id for id in patientsID if id not in listePatientsAssocies]
+        tableAssociation = medecinPatient.objects.all()
+        # Syntaxe équivalente
+        # for id in patientsID :
+        #    if id not in listePatientsAssocies:
+        #        patientsNonAssocies.append(id)
 
-    if request.method == "POST":
-        medecin_username = request.POST["medecin"]
-        patient_username = request.POST["patient"]
-        medecin = Utilisateur.objects.get(username=medecin_username)
-        patient = Utilisateur.objects.get(username=patient_username)
-        medecinPatient(idMedecin=medecin, idPatient=patient).save()
+        if request.method == "POST":
+            medecin_username = request.POST["medecin"]
+            patient_username = request.POST["patient"]
+            medecin = Utilisateur.objects.get(username=medecin_username)
+            patient = Utilisateur.objects.get(username=patient_username)
+            medecinPatient(idMedecin=medecin, idPatient=patient).save()
 
-    return render(request, "association.html",
-                  {"listePatientsNonAssocies": listePatientsNonAssocies,
-                   "medecinsID": medecinsID,
-                   "tableAssociation": tableAssociation})
+        return render(request, "association.html",
+                      {"listePatientsNonAssocies": listePatientsNonAssocies,
+                       "medecinsID": medecinsID,
+                       "tableAssociation": tableAssociation})
 
 
 #print(list(utilisateur.username for utilisateur in Utilisateur.objects.filter(role="medecin")))
