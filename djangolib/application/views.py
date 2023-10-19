@@ -25,9 +25,10 @@ def data_stress(request):
         if form.is_valid():
             # Calculer le total à partir des valeurs des champs du formulaire
             total = 0
-            for field_name in form.fields:
+            for field_name, field_value in form.cleaned_data.items():
                 if field_name != 'user_id' and field_name != 'date':
-                    total += form.cleaned_data[field_name]
+                    if field_value is not None:
+                        total += field_value
 
             # Enregistrez le total dans le formulaire
             form.instance.total_de_limpact_du_stress_dans_votre_vie_actuelle = total
@@ -41,12 +42,14 @@ def data_stress(request):
     return render(request, 'data_stress.html', {'form': form})
 
 
+
+
 @login_required
 def data_sante(request):
     prenom = request.user.username
     initial_data = {'prénom': prenom}
     initial_data['date'] = date.today().strftime('%d/%m/%Y')
-#col_stress = col_stress.objects.all()
+    #col_stress = col_stress.objects.all()
     if request.method == 'POST':
         form = ColSanteForm(request.POST, initial=initial_data)
         if form.is_valid():

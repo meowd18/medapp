@@ -10,34 +10,39 @@
 </p>
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    <div id="formContainer">
+        {{ form.as_p }}
 
-    <!-- Champ pour afficher le total -->
-    <p>Total de l'impact du stress dans votre vie actuelle :
-        <span id="total_de_stress">0</span>
-    </p>
+        <!-- Champ pour afficher le total -->
+        <p>Total de l'impact du stress dans votre vie actuelle :
+            <span id="total_de_stress">0</span>
+        </p>
 
-    <button type="submit">Enregistrer</button>
+        <button id="nextBtn" type="button">Suivant</button>
+        <button id="submitBtn" type="submit" style="display: none">Enregistrer</button>
+    </div>
 </form>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    // Fonction pour recalculer le champ total et le mettre à jour
-    function updateTotal() {
-        var total = 0;
+// Fonction pour recalculer le champ total et le mettre à jour
+function updateTotal() {
+    var total = 0;
 
-        // Obtenir une liste de tous les champs de type select
-        var selectFields = document.querySelectorAll('select');
+    // Obtenir une liste de tous les champs de type select
+    var selectFields = document.querySelectorAll('select');
 
-        // Itérer sur les champs de sélection et ajouter leur valeur au total
-        for (var i = 0; i < selectFields.length; i++) {
-            var value = parseInt(selectFields[i].value) || 0;
-            total += value;
+    // Itérer sur les champs de sélection et ajouter leur valeur au total
+    for (var i = 0; i < selectFields.length; i++) {
+        var value = selectFields[i].value;  // Obtenir la valeur du champ
+        if (value !== '') {  // Vérifier si la valeur n'est pas une chaîne vide
+            total += parseInt(value);
         }
-
-        // Mettre à jour le champ total
-        document.getElementById('total_de_stress').textContent = total;
     }
+
+    // Mettre à jour le champ total
+    document.getElementById('total_de_stress').textContent = total;
+}
 
     // Appeler la fonction de mise à jour au chargement de la page pour le calcul initial
     window.addEventListener('load', updateTotal);
@@ -47,5 +52,66 @@
     for (var i = 0; i < selectFields.length; i++) {
         selectFields[i].addEventListener('change', updateTotal);
     }
+
+    // Gestion du bouton "Suivant"
+    var currentGroup = 0;
+    var fieldGroups = document.querySelectorAll('.field-group');
+    var nextBtn = document.getElementById('nextBtn');
+    var submitBtn = document.getElementById('submitBtn');
+
+    nextBtn.addEventListener('click', function() {
+        fieldGroups[currentGroup].style.display = 'none';
+        currentGroup++;
+        if (currentGroup < fieldGroups.length) {
+            fieldGroups[currentGroup].style.display = 'block';
+            if (currentGroup === fieldGroups.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+            }
+        }
+    });
+</script>
+
+<script>
+    // On attend que la page soit complètement chargée
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // On récupère le conteneur du formulaire
+        let formContainer = document.getElementById('formContainer');
+        // On récupère tous les champs du formulaire (chaque champ est dans un élément <p>)
+        let allFields = formContainer.querySelectorAll('p');
+
+        // Une liste pour stocker nos groupes de champs
+        let fieldGroups = [];
+        let currentGroup = 0;
+
+        for (let i = 0; i < allFields.length; i += 3) {
+            let fieldGroup = document.createElement('div');
+            fieldGroup.className = 'field-group';
+            fieldGroup.style.display = 'none';
+
+            for (let j = 0; j < 3; j++) {
+                if (i + j < allFields.length) {
+                    fieldGroup.appendChild(allFields[i + j]);
+                }
+            }
+
+            fieldGroups.push(fieldGroup);
+            formContainer.insertBefore(fieldGroup, document.getElementById("nextBtn"));
+        }
+
+        fieldGroups[currentGroup].style.display = 'block';
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            fieldGroups[currentGroup].style.display = 'none';
+            currentGroup++;
+            if (currentGroup < fieldGroups.length) {
+                fieldGroups[currentGroup].style.display = 'block';
+                if (currentGroup === fieldGroups.length - 1) {
+                    nextBtn.style.display = 'none';
+                    submitBtn.style.display = 'block';
+                }
+            }
+        });
+    });
 </script>
 {% endblock %}
