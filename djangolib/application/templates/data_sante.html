@@ -6,103 +6,112 @@
 <h1>Bienvenue dans le formulaire santé {{prenom}} !</h1>
 <form id="formContainer" method="post">
   {% csrf_token %}
-  <button type="button" id="nextBtn">Suivant</button>
-  <button type="submit" id="submitBtn" style="display:none;">Envoyer</button>
-
   {{ form.as_p }}
+
+  <div id="button-container">
+    <div id="nav-buttons">
+      <button type="button" id="prevBtn" style="display: none;">Précédent</button>
+      <button type="button" id="nextBtn">Suivant</button>
+    </div>
+    <button type="submit" id="submitBtn" style="display: none;">Envoyer</button>
+  </div>
 </form>
 
 <style>
   /* Style pour les sous-titres */
   .subtitle {
-    font-size: 1.5em; /* Taille de police plus grande que les paragraphes (ajustez selon vos préférences) */
-    margin-bottom: 10px; /* Espacement en bas pour séparer du groupe de champs */
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+
+  #button-container {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  #nav-buttons {
+    display: flex;
+  }
+
+  #nav-buttons button {
+    margin-right: 10px;
   }
 </style>
 
 <script>
-    // On attend que la page soit complètement chargée
-    document.addEventListener('DOMContentLoaded', (event) => {
-        // On récupère le conteneur du formulaire
-        let formContainer = document.getElementById('formContainer');
-        // On récupère tous les champs du formulaire (chaque champ est dans un élément <p>)
-        let allFields = formContainer.querySelectorAll('p');
+  document.addEventListener('DOMContentLoaded', (event) => {
+    let formContainer = document.getElementById('formContainer');
+    let allFields = formContainer.querySelectorAll('p');
+    let fieldGroups = [];
+    let currentGroup = 0;
+    let groupSizes = [4, 6, 6, 6, 3, 7, 6];
+    let currentIndex = 0;
+    let subtitles = [
+      "Infos générales",
+      "Fréquence cardiaque et tension",
+      "Médicaments et effets secondaires",
+      "Consommation",
+      "Activité physique",
+      "Symptômes",
+      "Heures et durées"
+    ];
 
-        // Une liste pour stocker nos groupes de champs
-        let fieldGroups = [];
-        // Une variable pour savoir dans quel groupe de champs on se trouve
-        let currentGroup = 0;
+    let prevBtn = document.getElementById('prevBtn');
+    let nextBtn = document.getElementById('nextBtn');
+    let submitBtn = document.getElementById('submitBtn');
+    let buttonContainer = document.getElementById('button-container');
+    let navButtons = document.getElementById('nav-buttons');
 
-        // On va diviser les champs en groupes de 4, 6, 6, 6, 3, 7, et 6
-        let groupSizes = [4, 6, 6, 6, 3, 7, 6];
-        let currentIndex = 0;
-
-        // Tableau de sous-titres correspondant à chaque groupe
-        let subtitles = [
-            "Infos générales",
-            "Fréquence cardiaque et tension",
-            "Médicaments et effets secondaires",
-            "Consommation",
-            "Activité physique",
-            "Symptômes",
-            "Heures et durées"
-        ];
-
-        for (let i = 0; i < groupSizes.length; i++) {
-            // Créez un nouveau div pour chaque groupe de champs
-            let fieldGroup = document.createElement('div');
-            // Donnez-lui une classe pour pouvoir le styliser plus tard si besoin
-            fieldGroup.className = 'field-group';
-            // Cachez le groupe pour le moment
-            fieldGroup.style.display = 'none';
-
-            // Prenez le nombre de champs requis pour ce groupe
-            for (let j = 0; j < groupSizes[i]; j++) {
-                // Vérifiez que vous n'avez pas dépassé le nombre total de champs
-                if (currentIndex < allFields.length) {
-                    fieldGroup.appendChild(allFields[currentIndex]);
-                    currentIndex++;
-                }
-            }
-
-            // Ajoutez ce groupe à notre liste
-            fieldGroups.push(fieldGroup);
-
-            // Ajoutez ce groupe au formulaire, juste avant le bouton "Suivant"
-            formContainer.insertBefore(fieldGroup, document.getElementById("nextBtn"));
+    for (let i = 0; i < groupSizes.length; i++) {
+      let fieldGroup = document.createElement('div');
+      fieldGroup.className = 'field-group';
+      for (let j = 0; j < groupSizes[i]; j++) {
+        if (currentIndex < allFields.length) {
+          fieldGroup.appendChild(allFields[currentIndex]);
+          currentIndex++;
         }
+      }
+      fieldGroups.push(fieldGroup);
+      if (i > 0) {
+        fieldGroup.style.display = 'none';
+      }
+      formContainer.insertBefore(fieldGroup, buttonContainer);
+    }
 
-        // Affichez le premier groupe de champs
+    let subtitleDiv = document.createElement('div');
+    subtitleDiv.className = 'subtitle';
+    subtitleDiv.textContent = subtitles[currentGroup];
+    formContainer.insertBefore(subtitleDiv, fieldGroups[currentGroup]);
+
+    nextBtn.addEventListener('click', () => {
+      fieldGroups[currentGroup].style.display = 'none';
+      currentGroup++;
+      if (currentGroup < fieldGroups.length) {
         fieldGroups[currentGroup].style.display = 'block';
-
-        // Mettez à jour le sous-titre initial
-        let subtitleDiv = document.createElement('div');
-        subtitleDiv.className = 'subtitle';
         subtitleDiv.textContent = subtitles[currentGroup];
-        formContainer.insertBefore(subtitleDiv, fieldGroups[currentGroup]);
-
-        // Quand on clique sur le bouton "Suivant"
-        document.getElementById('nextBtn').addEventListener('click', () => {
-            // Cachez le groupe actuel
-            fieldGroups[currentGroup].style.display = 'none';
-            // Passez au groupe suivant
-            currentGroup++;
-
-            // Vérifiez que vous n'avez pas dépassé le nombre total de groupes
-            if (currentGroup < fieldGroups.length) {
-                // Affichez le nouveau groupe
-                fieldGroups[currentGroup].style.display = 'block';
-
-                // Mettez à jour le sous-titre
-                subtitleDiv.textContent = subtitles[currentGroup];
-            }
-
-            // Si c'est le dernier groupe, cachez le bouton "Suivant" et affichez le bouton "Envoyer"
-            if (currentGroup == fieldGroups.length - 1) {
-                document.getElementById('nextBtn').style.display = 'none';
-                document.getElementById('submitBtn').style.display = 'block';
-            }
-        });
+        prevBtn.style.display = 'block';
+        if (currentGroup === fieldGroups.length - 1) {
+          nextBtn.style.display = 'none';
+          submitBtn.style.display = 'block';
+        }
+      }
     });
+
+    prevBtn.addEventListener('click', () => {
+      if (currentGroup > 0) {
+        fieldGroups[currentGroup].style.display = 'none';
+        currentGroup--;
+        fieldGroups[currentGroup].style.display = 'block';
+        subtitleDiv.textContent = subtitles[currentGroup];
+        if (currentGroup === 0) {
+          prevBtn.style.display = 'none';
+        }
+        if (currentGroup < fieldGroups.length - 1) {
+          nextBtn.style.display = 'block';
+          submitBtn.style.display = 'none';
+        }
+      }
+    });
+  });
 </script>
 {% endblock %}
