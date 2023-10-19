@@ -3,13 +3,22 @@
 {% block content %}
 <title>Formulaire Santé</title>
 
-<h1>Formulaire de santé générale</h1>
+<h1>Bienvenue dans le formulaire santé {{prenom}} !</h1>
 <form id="formContainer" method="post">
   {% csrf_token %}
-  {{ form.as_p }}
   <button type="button" id="nextBtn">Suivant</button>
   <button type="submit" id="submitBtn" style="display:none;">Envoyer</button>
+
+  {{ form.as_p }}
 </form>
+
+<style>
+  /* Style pour les sous-titres */
+  .subtitle {
+    font-size: 1.5em; /* Taille de police plus grande que les paragraphes (ajustez selon vos préférences) */
+    margin-bottom: 10px; /* Espacement en bas pour séparer du groupe de champs */
+  }
+</style>
 
 <script>
     // On attend que la page soit complètement chargée
@@ -28,50 +37,70 @@
         let groupSizes = [4, 6, 6, 6, 3, 7, 6];
         let currentIndex = 0;
 
+        // Tableau de sous-titres correspondant à chaque groupe
+        let subtitles = [
+            "Infos générales",
+            "Fréquence cardiaque et tension",
+            "Médicaments et effets secondaires",
+            "Consommation",
+            "Activité physique",
+            "Symptômes",
+            "Heures et durées"
+        ];
+
         for (let i = 0; i < groupSizes.length; i++) {
-            // On crée un nouveau div pour chaque groupe de champs
+            // Créez un nouveau div pour chaque groupe de champs
             let fieldGroup = document.createElement('div');
-            // On lui donne une classe pour pouvoir le styliser plus tard si besoin
+            // Donnez-lui une classe pour pouvoir le styliser plus tard si besoin
             fieldGroup.className = 'field-group';
-            // On cache le groupe pour le moment
+            // Cachez le groupe pour le moment
             fieldGroup.style.display = 'none';
 
-            // On prend le nombre de champs requis pour ce groupe
+            // Prenez le nombre de champs requis pour ce groupe
             for (let j = 0; j < groupSizes[i]; j++) {
-                // On vérifie qu'on n'a pas dépassé le nombre total de champs
+                // Vérifiez que vous n'avez pas dépassé le nombre total de champs
                 if (currentIndex < allFields.length) {
                     fieldGroup.appendChild(allFields[currentIndex]);
                     currentIndex++;
                 }
             }
 
-            // On ajoute ce groupe à notre liste
+            // Ajoutez ce groupe à notre liste
             fieldGroups.push(fieldGroup);
 
-            // On ajoute ce groupe au formulaire, juste avant le bouton "Suivant"
+            // Ajoutez ce groupe au formulaire, juste avant le bouton "Suivant"
             formContainer.insertBefore(fieldGroup, document.getElementById("nextBtn"));
         }
 
-        // On affiche le premier groupe de champs
+        // Affichez le premier groupe de champs
         fieldGroups[currentGroup].style.display = 'block';
+
+        // Mettez à jour le sous-titre initial
+        let subtitleDiv = document.createElement('div');
+        subtitleDiv.className = 'subtitle';
+        subtitleDiv.textContent = subtitles[currentGroup];
+        formContainer.insertBefore(subtitleDiv, fieldGroups[currentGroup]);
 
         // Quand on clique sur le bouton "Suivant"
         document.getElementById('nextBtn').addEventListener('click', () => {
-            // On cache le groupe actuel
+            // Cachez le groupe actuel
             fieldGroups[currentGroup].style.display = 'none';
-            // On passe au groupe suivant
+            // Passez au groupe suivant
             currentGroup++;
 
-            // On vérifie qu'on n'a pas dépassé le nombre total de groupes
+            // Vérifiez que vous n'avez pas dépassé le nombre total de groupes
             if (currentGroup < fieldGroups.length) {
-                // On affiche le nouveau groupe
+                // Affichez le nouveau groupe
                 fieldGroups[currentGroup].style.display = 'block';
 
-                // Si c'est le dernier groupe, on cache le bouton "Suivant" et on affiche le bouton "Envoyer"
-                if (currentGroup == fieldGroups.length - 1) {
-                    document.getElementById('nextBtn').style.display = 'none';
-                    document.getElementById('submitBtn').style.display = 'block';
-                }
+                // Mettez à jour le sous-titre
+                subtitleDiv.textContent = subtitles[currentGroup];
+            }
+
+            // Si c'est le dernier groupe, cachez le bouton "Suivant" et affichez le bouton "Envoyer"
+            if (currentGroup == fieldGroups.length - 1) {
+                document.getElementById('nextBtn').style.display = 'none';
+                document.getElementById('submitBtn').style.display = 'block';
             }
         });
     });
