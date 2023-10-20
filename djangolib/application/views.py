@@ -75,8 +75,21 @@ else:
 
 @login_required
 def stress_datatable(request):
-    return render(request, "stress_datatable.html")
-
+    # Je récupère les champs de la table formulaire santé
+    champsFormulaireStress = [field.name for field in ColStress._meta.get_fields()]
+    # Je récupère les ids des lignes de la table formulaire santé
+    idDesFormulairesStr = [valeur.id for valeur in ColStress.objects.all()]
+    # Je crée une liste qui contiendra les valeurs des lignes
+    # Il y a autant d'élément que de ligne, donc que d'ids récupéré
+    # FormulaireSante.objects.filter(id=id).values()[0].values()
+    # Dans le code ci-dessus je récupère la ligne ayant un certain id
+    # Ensuite je récupère les valeurs de la ligne .values
+    # Le 1er élément qui est le dictionnaire des colonnes/valeurs
+    # et enfin uniquement les valeurs
+    dataFormulaireStress = [ColStress.objects.filter(id=id).values()[0].values() for id in idDesFormulairesStr]
+    return render(request, "stress_datatable.html",
+                  {"dataFormulaireStress" : dataFormulaireStress,
+                   "champsFormulaireStress" : champsFormulaireStress})
 @login_required
 def sante_datatable(request):
     # Je récupère les champs de la table formulaire santé
