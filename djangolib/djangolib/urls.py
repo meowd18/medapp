@@ -16,8 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from application.views import accueil, data_stress, association, data_sante
-from authentification.views import connexion, deco, inscription, comptes
+from application.views import *
+from authentification.views import *
 
 
 urlpatterns = [
@@ -29,7 +29,9 @@ urlpatterns = [
     path('data_stress/', data_stress, name='data_stress'),
     path("association", association, name="association"),
     path('comptes/', comptes, name='comptes'),
-    path('data_sante', data_sante, name="data_sante")
+    path('data_sante', data_sante, name="data_sante"),
+    path('sante_datatable', sante_datatable, name="sante_datatable"),
+    path('stress_datatable', stress_datatable, name="stress_datatable")
 ]
 
 

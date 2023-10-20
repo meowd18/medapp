@@ -17,55 +17,83 @@ def accueil(request):
 
 @login_required
 def data_stress(request):
-    prenom = request.user.username
-    initial_data = {'prénom': prenom}
-    initial_data['date'] = date.today().strftime('%d/%m/%Y')
-
-    if request.method == 'POST':
-        form = ColStressForm(request.POST, initial=initial_data)
-        if form.is_valid():
-            # Calculer le total à partir des valeurs des champs du formulaire
-            total = 0
-            for field_name, field_value in form.cleaned_data.items():
-                if field_name != 'user_id' and field_name != 'date':
-                    if field_value is not None:
-                        total += field_value
-
-            # Enregistrez le total dans le formulaire
-            form.instance.total_de_limpact_du_stress_dans_votre_vie_actuelle = total
-            form.save()
-
-            return redirect('accueil')  # Redirigez vers une page de confirmation
-
+    if request.user.role != "patient":
+        return redirect ("accueil")
     else:
-        form = ColStressForm(initial=initial_data)
+        prenom = request.user.username
+        initial_data = {'prénom': prenom}
+        initial_data['date'] = date.today().strftime('%d/%m/%Y')
 
-    return render(request, 'data_stress.html', {'form': form})
+        if request.method == 'POST':
+            form = ColStressForm(request.POST, initial=initial_data)
+            if form.is_valid():
+                # Calculer le total à partir des valeurs des champs du formulaire
+                total = 0
+                for field_name, field_value in form.cleaned_data.items():
+                    if field_name != 'user_id' and field_name != 'date':
+                        if field_value is not None:
+                            total += field_value
+
+                # Enregistrez le total dans le formulaire
+                form.instance.total_de_limpact_du_stress_dans_votre_vie_actuelle = total
+                form.save()
+
+                return redirect('accueil')  # Redirigez vers une page de confirmation
+
+        else:
+            form = ColStressForm(initial=initial_data)
+
+        return render(request, 'data_stress.html', {'form': form})
 
 
 
 
 @login_required
 def data_sante(request):
-    prenom = request.user.username
-    initial_data = {'prénom': prenom}
-    initial_data['date'] = date.today().strftime('%d/%m/%Y')
-    #col_stress = col_stress.objects.all()
-    if request.method == 'POST':
-        form = ColSanteForm(request.POST, initial=initial_data)
-        if form.is_valid():
-            form.save()
-            return redirect('accueil')  # Redirigez vers une page de confirmation
+    if request.user.role != "patient":
+        return redirect ("accueil")
     else:
-        form = ColSanteForm(initial=initial_data)
+        prenom = request.user.username
+        initial_data = {'prénom': prenom}
+        initial_data['date'] = date.today().strftime('%d/%m/%Y')
+        #col_stress = col_stress.objects.all()
+        if request.method == 'POST':
+            form = ColSanteForm(request.POST, initial=initial_data)
+            if form.is_valid():
+                form.save()
+                return redirect('accueil')  # Redirigez vers une page de confirmation
+        else:
+            form = ColSanteForm(initial=initial_data)
 
-    return render(request, 'data_sante.html', {'form': form})
+        return render(request, 'data_sante.html', {'form': form})
 
 #interdire accès à une page en fonction du rôle
 '''if request.user.role != "medecin":
     return redirect ("accueil") #ou autre page disant que fais-tu là
 else:
     return render (request, "page en question")'''
+
+@login_required
+def stress_datatable(request):
+    return render(request, "stress_datatable.html")
+
+@login_required
+def sante_datatable(request):
+    # Je récupère les champs de la table formulaire santé
+    champsFormulaireSante = [field.name for field in ColSante._meta.get_fields()]
+    # Je récupère les ids des lignes de la table formulaire santé
+    idDesFormulaires = [valeur.id for valeur in ColSante.objects.all()]
+    # Je crée une liste qui contiendra les valeurs des lignes
+    # Il y a autant d'élément que de ligne, donc que d'ids récupéré
+    # FormulaireSante.objects.filter(id=id).values()[0].values()
+    # Dans le code ci-dessus je récupère la ligne ayant un certain id
+    # Ensuite je récupère les valeurs de la ligne .values
+    # Le 1er élément qui est le dictionnaire des colonnes/valeurs
+    # et enfin uniquement les valeurs
+    dataFormulaireSante = [ColSante.objects.filter(id=id).values()[0].values() for id in idDesFormulaires]
+    return render(request, "sante_datatable.html",
+                  {"dataFormulaireSante" : dataFormulaireSante,
+                   "champsFormulaireSante" : champsFormulaireSante})
 
 
 @login_required
@@ -89,21 +117,6 @@ def association(request):
         # for id in patientsID :
         #    if id not in listePatientsAssocies:
         #        patientsNonAssocies.append(id)
-
-        # Je récupère les champs de la table formulaire santé
-        champsFormulaireSante = [field.name for field in ColSante._meta.get_fields()]
-        # Je récupère les ids des lignes de la table formulaire santé
-        idDesFormulaires = [valeur.id for valeur in ColSante.objects.all()]
-        # Je crée une liste qui contiendra les valeurs des lignes
-        # Il y a autant d'élément que de ligne, donc que d'ids récupéré
-        # FormulaireSante.objects.filter(id=id).values()[0].values()
-        # Dans le code ci-dessus je récupère la ligne ayant un certain id
-        # Ensuite je récupère les valeurs de la ligne .values
-        # Le 1er élément qui est le dictionnaire des colonnes/valeurs
-        # et enfin uniquement les valeurs
-        dataFormulaireSante = [ColSante.objects.filter(id=id).values()[0].values() for id in idDesFormulaires]
-
-
         if request.method == "POST":
             medecin_username = request.POST["medecin"]
             patient_username = request.POST["patient"]
@@ -115,9 +128,7 @@ def association(request):
         return render(request, "association.html",
                       {"listePatientsNonAssocies": listePatientsNonAssocies,
                        "medecinsID": medecinsID,
-                       "tableAssociation": tableAssociation,
-                       "dataFormulaireSante" : dataFormulaireSante,
-                       "champsFormulaireSante" : champsFormulaireSante})
+                       "tableAssociation" : tableAssociation})
 
 
 #print(list(utilisateur.username for utilisateur in Utilisateur.objects.filter(role="medecin")))

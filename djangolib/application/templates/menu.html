@@ -5,8 +5,13 @@
         </li>
         <li>Formulaires
             <ul>
+                {% if user.role != "medecin" %}
                 <li><a href="{% url 'data_sante' %}">Santé générale</a></li>
                 <li><a href="{% url 'data_stress' %}">Stress</a></li>
+                {% else %}
+                <li><a href="{% url 'sante_datatable' %}">Santé générale</a></li>
+                <li><a href="{% url 'stress_datatable' %}">Stress</a></li>
+                {% endif %}
             </ul>
         </li>
         <li><a href="">Historique</a></li>
