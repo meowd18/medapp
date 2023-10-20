@@ -18,10 +18,10 @@
         {% if user.role == "medecin" %}
         <li><a href="">EDA et IA</a></li>
         {% endif %}
-        {% if user.role == "medecin" or user.role == "responsable" %}
+        {% if user.role != "patient" %}
         <li><a href="{% url 'association' %}">Associer un médecin à un patient</a></li>
         {% endif %}
-        <li><a href="{% url 'comptes' %}">Comptes</a></li>
+        <li><a href="{% url 'comptes' %}">Mon compte</a></li>
         <li> <a href="{% url 'deco' %}">Déconnexion</a></li>
     </ul>
 </nav>
