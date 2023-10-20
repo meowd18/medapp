@@ -108,7 +108,6 @@ def sante_datatable(request):
                   {"dataFormulaireSante" : dataFormulaireSante,
                    "champsFormulaireSante" : champsFormulaireSante})
 
-
 @login_required
 def association(request):
     if request.user.role == "patient":
@@ -142,6 +141,20 @@ def association(request):
                       {"listePatientsNonAssocies": listePatientsNonAssocies,
                        "medecinsID": medecinsID,
                        "tableAssociation" : tableAssociation})
+
+@login_required
+def histo_patient(request):
+    champsFormulaireStress = [field.name for field in ColStress._meta.get_fields()]
+    idDesFormulairesStr = [valeur.id for valeur in ColStress.objects.all()]
+    dataFormulaireStress = [ColStress.objects.filter(user_id=request.user.username).values()[0].values() for id in idDesFormulairesStr]
+    champsFormulaireSante = [field.name for field in ColSante._meta.get_fields()]
+    idDesFormulaires = [valeur.id for valeur in ColSante.objects.all()]
+    dataFormulaireSante = [ColSante.objects.filter(user_id=request.user.username).values()[0].values() for id in idDesFormulaires]
+    return render(request, "histo_patient.html",
+                  {"dataFormulaireSante" : dataFormulaireSante,
+                   "champsFormulaireSante" : champsFormulaireSante,
+                  "dataFormulaireStress" : dataFormulaireStress,
+                   "champsFormulaireStress" : champsFormulaireStress})
 
 
 #print(list(utilisateur.username for utilisateur in Utilisateur.objects.filter(role="medecin")))

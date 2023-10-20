@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<title>Formulaire Stress</title>
+
+<h1>Données du formulaire concernant le stress</h1>
+
+<h2>Table données Formulaire Stress</h2>
+<table id="example2">
+  <thead>
+  <tr>
+    {% for colonne in champsFormulaireStress %}
+    <th>
+      {{ colonne }}
+    </th>
+    {% endfor %}
+  </tr>
+  </thead>
+  {% for data in dataFormulaireStress %}
+  <tr>
+    {% for element in data %}
+    <th>
+      {{ element }}
+    </th>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+</table>
+
+
+<h2>Table données Formulaire santé</h2>
+<table id="example">
+  <thead>
+  <tr>
+    {% for colonne in champsFormulaireSante %}
+    <th>
+      {{ colonne }}
+    </th>
+    {% endfor %}
+  </tr>
+  </thead>
+  {% for data in dataFormulaireSante %}
+  <tr>
+    {% for element in data %}
+    <th>
+      {{ element }}
+    </th>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

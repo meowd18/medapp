@@ -31,7 +31,8 @@ urlpatterns = [
     path('comptes/', comptes, name='comptes'),
     path('data_sante', data_sante, name="data_sante"),
     path('sante_datatable', sante_datatable, name="sante_datatable"),
-    path('stress_datatable', stress_datatable, name="stress_datatable")
+    path('stress_datatable', stress_datatable, name="stress_datatable"),
+    path('histo_patient', histo_patient, name="histo_patient"),
 ]
 
 
