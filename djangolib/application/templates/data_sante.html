@@ -114,5 +114,23 @@
     });
   });
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Sélectionnez tous les champs IntegerField dans le formulaire
+        var integerFields = document.querySelectorAll('input[type="text"][data-integerfield="true"]');
+
+        // Ajoutez un écouteur d'événements pour chaque champ
+        integerFields.forEach(function (field) {
+            field.addEventListener('input', function (event) {
+                // Remplacez tout caractère non numérique par une chaîne vide
+                field.value = field.value.replace(/\D/g, '');
+            });
+        });
+    });
+</script>
+
+
+
 {% endblock %}
 
