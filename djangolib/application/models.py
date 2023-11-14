@@ -111,11 +111,11 @@ class ColSante(models.Model):
     présence_de_palpitation = models.BooleanField(blank=True, null=True)
     présence_de_douleur_thoracique = models.BooleanField(blank=True, null=True)
     présence_de_malaise = models.BooleanField(blank=True, null=True)
-    heure_de_début_des_palpitations = models.TimeField(blank=True, null=True)
+    heure_de_début_des_palpitations = models.TimeField("début des palpitations (format HH:MM:SS)", blank=True, null=True)
     durée_totale_des_palpitations_en_minutes = models.IntegerField(blank=True, null=True)
-    heure_de_début_des_douleurs_thoraciques = models.TimeField(blank=True, null=True)
+    heure_de_début_des_douleurs_thoraciques = models.TimeField("début des douleurs thoraciques (format HH:MM:SS)", blank=True, null=True)
     durée_totale_des_douleurs_thoraciques_en_minutes = models.IntegerField(blank=True, null=True)
-    heure_de_début_des_malaises = models.TimeField(blank=True, null=True)
+    heure_de_début_des_malaises = models.TimeField("début des malaises (format HH:MM:SS)", blank=True, null=True)
     durée_totale_des_malaises_en_minutes = models.IntegerField(blank=True, null=True)
 
     class Meta:
