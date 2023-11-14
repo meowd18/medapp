@@ -4,6 +4,7 @@ from .forms import ColStressForm, ColSanteForm
 from .models import ColSante, ColStress
 from authentification.models import Utilisateur, medecinPatient
 from datetime import date
+import numpy as np
 
 #from .models import col_stress
 
@@ -75,6 +76,15 @@ else:
 
 @login_required
 def stress_datatable(request):
+    pat = []
+    for p in medecinPatient.objects.filter(idMedecin = request.user.id).values():
+        username_pat = Utilisateur.objects.filter(id = p["idPatient_id"])[0].username
+        pat.append([el.values() for el in ColStress.objects.filter(user_id = username_pat).values()])
+    try:
+        pat = list(np.concatenate(pat).flat)
+    except:
+        pat = pat
+
     # Je récupère les champs de la table formulaire santé
     champsFormulaireStress = [field.name for field in ColStress._meta.get_fields()]
     # Je récupère les ids des lignes de la table formulaire santé
@@ -87,11 +97,22 @@ def stress_datatable(request):
     # Le 1er élément qui est le dictionnaire des colonnes/valeurs
     # et enfin uniquement les valeurs
     dataFormulaireStress = [ColStress.objects.filter(id=id).values()[0].values() for id in idDesFormulairesStr]
+    dataFormulaireStress_med = pat
     return render(request, "stress_datatable.html",
                   {"dataFormulaireStress" : dataFormulaireStress,
+                   "dataFormulaireStress_med" : dataFormulaireStress_med,
                    "champsFormulaireStress" : champsFormulaireStress})
 @login_required
 def sante_datatable(request):
+    pat = []
+    for p in medecinPatient.objects.filter(idMedecin = request.user.id).values():
+        username_pat = Utilisateur.objects.filter(id = p["idPatient_id"])[0].username
+        pat.append([el.values() for el in ColSante.objects.filter(user_id = username_pat).values()])
+    try:
+        pat = list(np.concatenate(pat).flat)
+    except:
+        pat = pat
+
     # Je récupère les champs de la table formulaire santé
     champsFormulaireSante = [field.name for field in ColSante._meta.get_fields()]
     # Je récupère les ids des lignes de la table formulaire santé
@@ -104,8 +125,10 @@ def sante_datatable(request):
     # Le 1er élément qui est le dictionnaire des colonnes/valeurs
     # et enfin uniquement les valeurs
     dataFormulaireSante = [ColSante.objects.filter(id=id).values()[0].values() for id in idDesFormulaires]
+    dataFormulaireSante_med = pat
     return render(request, "sante_datatable.html",
                   {"dataFormulaireSante" : dataFormulaireSante,
+                   "dataFormulaireSante_med" : dataFormulaireSante_med,
                    "champsFormulaireSante" : champsFormulaireSante})
 
 @login_required

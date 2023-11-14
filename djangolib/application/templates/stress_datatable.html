@@ -6,6 +6,7 @@
 <h1>Données du formulaire concernant le stress</h1>
 
 <h2>Table données Formulaire Stress</h2>
+{% if user.role == "responsable" %}
 <table id="example2">
     <thead>
     <tr>
@@ -26,4 +27,26 @@
     </tr>
     {% endfor %}
 </table>
+{% elif user.role == "medecin" %}
+<table id="example2">
+    <thead>
+    <tr>
+        {% for colonne in champsFormulaireStress %}
+        <th>
+            {{ colonne }}
+        </th>
+        {% endfor %}
+    </tr>
+    </thead>
+    {% for data in dataFormulaireStress_med %}
+    <tr>
+        {% for element in data %}
+        <th>
+            {{ element }}
+        </th>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
 {% endblock %}
