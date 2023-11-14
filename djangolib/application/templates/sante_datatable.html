@@ -6,7 +6,6 @@
 <h1>Données du formulaire de santé générale</h1>
 
 <h2>Table données Formulaire santé</h2>
-{% if user.role == "responsable" %}
 <table id="example">
   <thead>
   <tr>
@@ -27,26 +26,4 @@
   </tr>
   {% endfor %}
 </table>
-{% elif user.role == "medecin" %}
-<table id="example">
-  <thead>
-  <tr>
-    {% for colonne in champsFormulaireSante %}
-    <th>
-      {{ colonne }}
-    </th>
-    {% endfor %}
-  </tr>
-  </thead>
-  {% for data in dataFormulaireSante_med %}
-  <tr>
-    {% for element in data %}
-    <th>
-      {{ element }}
-    </th>
-    {% endfor %}
-  </tr>
-  {% endfor %}
-</table>
-{% endif %}
 {% endblock %}

@@ -76,60 +76,44 @@ else:
 
 @login_required
 def stress_datatable(request):
+    user = request.user
     pat = []
-    for p in medecinPatient.objects.filter(idMedecin = request.user.id).values():
-        username_pat = Utilisateur.objects.filter(id = p["idPatient_id"])[0].username
-        pat.append([el.values() for el in ColStress.objects.filter(user_id = username_pat).values()])
-    try:
-        pat = list(np.concatenate(pat).flat)
-    except:
-        pat = pat
 
-    # Je récupère les champs de la table formulaire santé
+    if user.role == "responsable":
+        idDesFormulaires = [valeur.id for valeur in ColStress.objects.all()]
+        dataFormulaireStress = [ColStress.objects.filter(id=id).values()[0].values() for id in idDesFormulaires]
+    elif user.role == "medecin":
+        for p in medecinPatient.objects.filter(idMedecin=user.id).values():
+            username_pat = Utilisateur.objects.get(id=p["idPatient_id"]).username
+            dataFormulaireStress = [el.values() for el in ColStress.objects.filter(user_id=username_pat).values()]
+            pat.extend(dataFormulaireStress)
+
     champsFormulaireStress = [field.name for field in ColStress._meta.get_fields()]
-    # Je récupère les ids des lignes de la table formulaire santé
-    idDesFormulairesStr = [valeur.id for valeur in ColStress.objects.all()]
-    # Je crée une liste qui contiendra les valeurs des lignes
-    # Il y a autant d'élément que de ligne, donc que d'ids récupéré
-    # FormulaireSante.objects.filter(id=id).values()[0].values()
-    # Dans le code ci-dessus je récupère la ligne ayant un certain id
-    # Ensuite je récupère les valeurs de la ligne .values
-    # Le 1er élément qui est le dictionnaire des colonnes/valeurs
-    # et enfin uniquement les valeurs
-    dataFormulaireStress = [ColStress.objects.filter(id=id).values()[0].values() for id in idDesFormulairesStr]
-    dataFormulaireStress_med = pat
-    return render(request, "stress_datatable.html",
-                  {"dataFormulaireStress" : dataFormulaireStress,
-                   "dataFormulaireStress_med" : dataFormulaireStress_med,
-                   "champsFormulaireStress" : champsFormulaireStress})
+
+    return render(request, "stress_datatable.html", {
+        "dataFormulaireStress": pat if user.role == "medecin" else dataFormulaireStress,
+        "champsFormulaireStress": champsFormulaireStress,
+    })
 @login_required
 def sante_datatable(request):
+    user = request.user
     pat = []
-    for p in medecinPatient.objects.filter(idMedecin = request.user.id).values():
-        username_pat = Utilisateur.objects.filter(id = p["idPatient_id"])[0].username
-        pat.append([el.values() for el in ColSante.objects.filter(user_id = username_pat).values()])
-    try:
-        pat = list(np.concatenate(pat).flat)
-    except:
-        pat = pat
 
-    # Je récupère les champs de la table formulaire santé
+    if user.role == "responsable":
+        idDesFormulaires = [valeur.id for valeur in ColSante.objects.all()]
+        dataFormulaireSante = [ColSante.objects.filter(id=id).values()[0].values() for id in idDesFormulaires]
+    elif user.role == "medecin":
+        for p in medecinPatient.objects.filter(idMedecin=user.id).values():
+            username_pat = Utilisateur.objects.get(id=p["idPatient_id"]).username
+            dataFormulaireSante = [el.values() for el in ColSante.objects.filter(user_id=username_pat).values()]
+            pat.extend(dataFormulaireSante)
+
     champsFormulaireSante = [field.name for field in ColSante._meta.get_fields()]
-    # Je récupère les ids des lignes de la table formulaire santé
-    idDesFormulaires = [valeur.id for valeur in ColSante.objects.all()]
-    # Je crée une liste qui contiendra les valeurs des lignes
-    # Il y a autant d'élément que de ligne, donc que d'ids récupéré
-    # FormulaireSante.objects.filter(id=id).values()[0].values()
-    # Dans le code ci-dessus je récupère la ligne ayant un certain id
-    # Ensuite je récupère les valeurs de la ligne .values
-    # Le 1er élément qui est le dictionnaire des colonnes/valeurs
-    # et enfin uniquement les valeurs
-    dataFormulaireSante = [ColSante.objects.filter(id=id).values()[0].values() for id in idDesFormulaires]
-    dataFormulaireSante_med = pat
-    return render(request, "sante_datatable.html",
-                  {"dataFormulaireSante" : dataFormulaireSante,
-                   "dataFormulaireSante_med" : dataFormulaireSante_med,
-                   "champsFormulaireSante" : champsFormulaireSante})
+
+    return render(request, "sante_datatable.html", {
+        "dataFormulaireSante": pat if user.role == "medecin" else dataFormulaireSante,
+        "champsFormulaireSante": champsFormulaireSante,
+    })
 
 @login_required
 def association(request):
