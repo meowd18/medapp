@@ -4,19 +4,37 @@
 <title>Comptes</title>
 
 <h1>Modification de votre mot de passe</h1>
-<form method = "post">
+<ul>
+    <li>La longueur minimale du mot de passe est de 8 caractères.</li>
+    <li>Il doit contenir au moins une lettre minuscule (a-z).</li>
+    <li>Il doit contenir au moins une lettre majuscule (A-Z).</li>
+    <li>Il doit contenir au moins un chiffre (0-9).</li>
+    <li>Il doit contenir au moins un caractère spécial parmi !@#$%^&*()_+-.</li>
+</ul>
+<form method="post" action="{% url 'comptes' %}">
     {{ message }}<br>
     {% csrf_token %}
+    {{ modification_mdp_form.ancienMDP.errors }}
     <label>Indiquez votre ancien mot de passe</label><br>
-    <input type="password" required name="ancienMDP"><br>
-
+    {{ modification_mdp_form.ancienMDP }}
+    <br>
+    {{ modification_mdp_form.nouveauMDP1.errors }}
     <label>Choisissez votre nouveau mot de passe</label><br>
-    <input type="password" required pattern={{ regexMDP }} name="nouveauMDP1"><br>
+    {{ modification_mdp_form.nouveauMDP1 }}
+    <br>
+    {{ modification_mdp_form.nouveauMDP2.errors }}
+    <label>Confirmez votre nouveau mot de passe</label><br>
+    {{ modification_mdp_form.nouveauMDP2 }}
+    <br>
+    <br>
+    <button type="submit" name="modification_mdp">Modifier le mot de passe</button>
+</form>
 
-    <label>Confirmez votre nouveau mot de place</label><br>
-    <input type="password" required pattern={{ regexMDP }} name="nouveauMDP2"><br>
-    <input type="submit">
+<h1>Informations du compte</h1>
+<form method="post" action="{% url 'comptes' %}">
+    {% csrf_token %}
+    {{ utilisateur_form.as_p }}
+    <button type="submit" name="enregistrer">Modifier</button>
 </form>
 
 {% endblock %}
-

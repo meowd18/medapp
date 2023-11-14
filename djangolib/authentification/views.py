@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
+import re
 from authentification.models import Utilisateur
 import random
 import string
 from django.contrib.auth.decorators import login_required
 from authentification.models import Utilisateur
+from .forms import UtilisateurForm, ModificationMDPForm
 
 
 # Create your views here.
@@ -46,28 +48,47 @@ def inscription(request):
 
 @login_required
 def comptes(request):
-    regexMDP = "^(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[!@#$%^&*()_+-]).{8,}$"
+    regexMDP = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+-]).{8,}$"
     message = ""
-    if request.method =="POST":
-        ancienMDP = request.POST["ancienMDP"]
-        nouveauMDP1 = request.POST["nouveauMDP1"]
-        nouveauMDP2 = request.POST["nouveauMDP2"]
 
-        verification = authenticate(username = request.user.username,
-                                    password = ancienMDP)
-        if verification != None:
-            if nouveauMDP1 == nouveauMDP2:
-                utilisateur = Utilisateur.objects.get(username = request.user.username)
-                utilisateur.set_password(request.POST.get("nouveauMDP1"))
-                utilisateur.save()
-                return redirect("accueil")
-            else:
-                message = "Les deux mots de passe ne sont pas identiques"
-        else:
-            message = "Mot de passe incorrect"
-    return render(request,
-                  "comptes.html",
-                  {"regexMDP": regexMDP, "message": message})
+    # Passer value='' au champ 'ancienMDP' pour éviter la pré-remplissage
+    modification_mdp_form = ModificationMDPForm()
+    utilisateur_form = UtilisateurForm(instance=request.user)
+
+    if request.method == "POST":
+        if "modification_mdp" in request.POST:
+            modification_mdp_form = ModificationMDPForm(request.POST)
+            if modification_mdp_form.is_valid():
+                ancienMDP = modification_mdp_form.cleaned_data["ancienMDP"]
+                nouveauMDP1 = modification_mdp_form.cleaned_data["nouveauMDP1"]
+                nouveauMDP2 = modification_mdp_form.cleaned_data["nouveauMDP2"]
+
+                verification = authenticate(username=request.user.username, password=ancienMDP)
+
+                if verification is not None:
+                    if nouveauMDP1 == nouveauMDP2 and re.match(regexMDP, nouveauMDP1):
+                        utilisateur = Utilisateur.objects.get(username=request.user.username)
+                        utilisateur.set_password(nouveauMDP1)
+                        utilisateur.save()
+                        return redirect("accueil")
+                    elif nouveauMDP1 != nouveauMDP2:
+                        message = "Les deux mots de passe ne sont pas identiques"
+                    else:
+                        message = "Les deux mots de passe ne respectent pas la contrainte."
+                else:
+                    message = "Mot de passe incorrect"
+
+        elif "enregistrer" in request.POST:
+            utilisateur_form = UtilisateurForm(request.POST, instance=request.user)
+            if utilisateur_form.is_valid():
+                utilisateur_form.save()
+
+    return render(request, "comptes.html", {
+        "regexMDP": regexMDP,
+        "message": message,
+        "modification_mdp_form": modification_mdp_form,
+        "utilisateur_form": utilisateur_form,
+    })
 
 """
 def alimentationPatients():
