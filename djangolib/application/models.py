@@ -6,6 +6,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.core.exceptions import ValidationError
 from datetime import date
 
 class Users(models.Model):
@@ -80,7 +81,7 @@ class ColStress(models.Model):
 class ColSante(models.Model):
     user_id = models.CharField("id Patient", blank=True, null=False, max_length=10)  # The composite primary key (user_id, date) found, that is not supported. The first column is selected.
     date = models.TextField(blank=True, null=True)
-    poids = models.IntegerField(blank=True, null=True)
+    poids = models.IntegerField("poids en kg", blank=True, null=True)
     tour_de_taille_en_cm = models.IntegerField(blank=True, null=True)
     fréquence_cardiaque_par_minute = models.IntegerField(blank=True, null=True)
     tension_artérielle_systolique_prise_du_matin = models.IntegerField(blank=True, null=True)
@@ -98,8 +99,8 @@ class ColSante(models.Model):
     grignotage_sucre = models.BooleanField("grignotage sucré", blank=True, null=True)
     grignotage_sale = models.BooleanField("grignotage salé", blank=True, null=True)
     nombre_de_repas_pris_durant_la_journée = models.IntegerField(blank=True, null=True)
-    quantité_deau_bue_en_litre = models.IntegerField("quantité d'eau beau en litres", blank=True, null=True)
-    quantité_dalcool_consommé_en_litre = models.IntegerField("quantité d'alcool consommé en litres", blank=True, null=True)
+    quantité_deau_bue_en_litre = models.FloatField("quantité d'eau bue en litres", blank=True, null=True)
+    quantité_dalcool_consommé_en_litre = models.FloatField("quantité d'alcool consommé en litres", blank=True, null=True)
     activité_physique_aujourdhui = models.BooleanField("activité physique aujourd'hui", blank=True, null=True)
     nature_de_votre_activité_physique = models.CharField(blank=True, null=True, max_length=150)
     durée_de_lactivité_physique_en_minutes = models.IntegerField("durée de l'activité physiques en minutes", blank=True, null=True)
@@ -120,3 +121,31 @@ class ColSante(models.Model):
     class Meta:
         #managed = False
         db_table = 'col_sante'
+
+    def validate_duree(self, presence, duree_champ, message_prefix):
+        if presence and duree_champ == 0:
+            raise ValidationError(f"Si vous indiquez {message_prefix}, veuillez spécifier une durée supérieure à zéro.")
+        elif not presence and duree_champ != 0:
+            raise ValidationError(f"Si vous n'indiquez pas {message_prefix}, la durée doit être égale à zéro.")
+
+    def clean(self):
+        # Appeler la méthode clean du modèle de base pour exécuter les validations par défaut
+        super().clean()
+
+        # Consommation alcool
+        if self.consommation_dalcool and self.quantité_dalcool_consommé_en_litre == 0:
+            raise ValidationError("Si vous indiquez une consommation d'alcool, veuillez spécifier une quantité d'alcool supérieure à zéro.")
+        elif not self.consommation_dalcool and self.quantité_dalcool_consommé_en_litre != 0:
+            raise ValidationError("Si vous n'indiquez pas de consommation d'alcool, la quantité d'alcool consommée doit être égale à zéro.")
+
+        # Activité physique
+        self.validate_duree(self.activité_physique_aujourdhui, self.durée_de_lactivité_physique_en_minutes, "une activité physique")
+
+        # Palpitations
+        self.validate_duree(self.présence_de_palpitation, self.durée_totale_des_palpitations_en_minutes, "des palpitations")
+
+        # Douleurs thoraciques
+        self.validate_duree(self.présence_de_douleur_thoracique, self.durée_totale_des_douleurs_thoraciques_en_minutes, "des douleurs thoraciques")
+
+        # Malaises
+        self.validate_duree(self.présence_de_malaise, self.durée_totale_des_malaises_en_minutes, "des malaises")
