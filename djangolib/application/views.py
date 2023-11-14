@@ -168,11 +168,15 @@ def association(request):
 @login_required
 def histo_patient(request):
     champsFormulaireStress = [field.name for field in ColStress._meta.get_fields()]
-    idDesFormulairesStr = [valeur.id for valeur in ColStress.objects.all()]
+#    idDesFormulairesStr = [valeur.id for valeur in ColStress.objects.all()]
+    idDesFormulairesStr = [valeur.id for valeur in ColStress.objects.filter(user_id=request.user.username)]
     dataFormulaireStress = [ColStress.objects.filter(id=id).values()[0].values() for id in idDesFormulairesStr]
+
     champsFormulaireSante = [field.name for field in ColSante._meta.get_fields()]
-    idDesFormulaires = [valeur.id for valeur in ColSante.objects.all()]
-    dataFormulaireSante = [ColSante.objects.filter(user_id=request.user.username).values()[0].values() for id in idDesFormulaires]
+#    idDesFormulairesSante = [valeur.id for valeur in ColSante.objects.all()]
+    idDesFormulairesSante = [valeur.id for valeur in ColSante.objects.filter(user_id=request.user.username)]
+
+    dataFormulaireSante = [ColSante.objects.filter(user_id=request.user.username).values()[0].values() for id in idDesFormulairesSante]
     return render(request, "histo_patient.html",
                   {"dataFormulaireSante" : dataFormulaireSante,
                    "champsFormulaireSante" : champsFormulaireSante,

@@ -7,6 +7,7 @@
 <form method="post">
     {% csrf_token %}
 
+    {% if user.role == "responsable" %}
     <label>Choisissez le médecin à associer :</label><br>
     <select name="medecin" id="medecin">
         <option value="">Choisissez un médecin</option>
@@ -26,7 +27,7 @@
     <br>
     <input type="submit">
 </form>
-
+    {% endif %}
 <h2>Table d'association Medecin Patient</h2>
 <table>
     <tr>
