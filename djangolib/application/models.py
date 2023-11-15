@@ -25,7 +25,8 @@ class ColStress(models.Model):
         (5, '5'),
         (10, '10'),
     )
-    user_id = models.CharField('id Patient', blank=True, null=False, max_length=10)  # The composite primary key (user_id, date) found, that is not supported. The first column is selected.
+    #id = models.AutoField(primary_key=True)
+    user_id = models.CharField('id Patient', blank=True, null=False, max_length=10)
     date = models.TextField(blank=True, null=True)
     irritabilité = models.IntegerField(choices=CHOIX, blank=True, null=True)
     sentiments_depressifs = models.IntegerField("sentiments dépressifs", choices=CHOIX, blank=True, null=True)
@@ -71,7 +72,7 @@ class ColStress(models.Model):
     difficulte_a_sendormir = models.IntegerField("difficulté à s'endormir", choices=CHOIX, blank=True, null=True)
     difficulte_a_se_remettre_dun_evenement_contrariant = models.IntegerField("difficulté à se remettre d'un évènement", choices=CHOIX, blank=True, null=True)
     mains_moites = models.IntegerField(choices=CHOIX, blank=True, null=True)
-    total_de_limpact_du_stress_dans_votre_vie_actuelle = models.IntegerField()
+    total_de_limpact_du_stress_dans_votre_vie_actuelle = models.IntegerField(null=True, blank=True, default=0)
     #total_de_limpact_du_stress_dans_votre_vie_actuelle = models.IntegerField("total de l'impact du stress dans votre vie actuelle", blank=True, null=True)
 
     class Meta:
@@ -79,7 +80,7 @@ class ColStress(models.Model):
         db_table = 'col_stress'
 
 class ColSante(models.Model):
-    user_id = models.CharField("id Patient", blank=True, null=False, max_length=10)  # The composite primary key (user_id, date) found, that is not supported. The first column is selected.
+    user_id = models.CharField("id Patient", blank=True, null=False, max_length=10)
     date = models.TextField(blank=True, null=True)
     poids = models.IntegerField("poids en kg", blank=True, null=True)
     tour_de_taille_en_cm = models.IntegerField(blank=True, null=True)
@@ -125,7 +126,7 @@ class ColSante(models.Model):
     def validate_duree(self, presence, duree_champ, message_prefix):
         if presence and duree_champ == 0:
             raise ValidationError(f"Si vous indiquez {message_prefix}, veuillez spécifier une durée supérieure à zéro.")
-        elif not presence and duree_champ != 0:
+        elif not presence and duree_champ not in [0, None]:
             raise ValidationError(f"Si vous n'indiquez pas {message_prefix}, la durée doit être égale à zéro.")
 
     def clean(self):
@@ -135,7 +136,7 @@ class ColSante(models.Model):
         # Consommation alcool
         if self.consommation_dalcool and self.quantité_dalcool_consommé_en_litre == 0:
             raise ValidationError("Si vous indiquez une consommation d'alcool, veuillez spécifier une quantité d'alcool supérieure à zéro.")
-        elif not self.consommation_dalcool and self.quantité_dalcool_consommé_en_litre != 0:
+        elif not self.consommation_dalcool and self.quantité_dalcool_consommé_en_litre not in [0, None]:
             raise ValidationError("Si vous n'indiquez pas de consommation d'alcool, la quantité d'alcool consommée doit être égale à zéro.")
 
         # Activité physique
