@@ -18,7 +18,7 @@
         <li><a href="{% url 'histo_patient' %}">Historique</a></li>
         {% endif %}
         {% if user.role != "patient" %}
-        <li><a href="">EDA et IA</a></li>
+        <li><a href="{% url 'edaia' %}">EDA et IA</a></li>
         {% endif %}
         {% if user.role != "patient" %}
         <li><a href="{% url 'association' %}">Association médecin/patient</a></li>

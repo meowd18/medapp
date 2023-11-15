@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    #content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    img {
+      width: 80vw; /* Utilise 90% de la largeur de la vue */
+      height: auto; /* Ajuste automatiquement la hauteur pour conserver le ratio */
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+  </style>
+
+<!-- Afficher l'image à partir de l'URL externe -->
+<img src="{{ image_url }}" alt="External Image">
+{% endblock %}

@@ -168,6 +168,16 @@ def histo_patient(request):
                    "champsFormulaireStress" : champsFormulaireStress})
 
 
+def edaia(request):
+    # URL de l'image externe
+    image_url = "https://upload.wikimedia.org/wikipedia/commons/1/19/Under_construction_graphic.gif"
+    # Passer l'URL à la template
+    context = {
+        'image_url': image_url,
+    }
+    return render(request, 'edaia.html', context)
+
+
 #print(list(utilisateur.username for utilisateur in Utilisateur.objects.filter(role="medecin")))
 
 '''
