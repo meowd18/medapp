@@ -4,6 +4,7 @@ from .forms import ColStressForm, ColSanteForm
 from .models import ColSante, ColStress
 from authentification.models import Utilisateur, medecinPatient
 from datetime import datetime, date, timedelta
+from django.http import HttpResponseBadRequest
 import numpy as np
 
 #from .models import col_stress
@@ -53,7 +54,8 @@ def data_stress(request, prochainFormulaire_date_stress=None):
                 form.save()
 
                 return redirect('accueil')  # Redirigez vers une page de confirmation
-
+            elif not remplirProchainFormulaire:
+                return HttpResponseBadRequest("Vous ne pouvez pas encore soumettre de réponse pour ce questionnaire")
         else:
             form = ColStressForm(initial=initial_data)
 
@@ -89,11 +91,14 @@ def data_sante(request, prochainFormulaire_date_sante=None):
         initial_data = {'prénom': prenom}
         initial_data['date'] = date.today().strftime('%d/%m/%Y')
         #col_stress = col_stress.objects.all()
+
         if request.method == 'POST':
             form = ColSanteForm(request.POST, initial=initial_data)
             if form.is_valid():
                 form.save()
                 return redirect('accueil')  # Redirigez vers une page de confirmation
+            elif not remplirProchainFormulaire:
+                return HttpResponseBadRequest("Vous ne pouvez pas encore soumettre de réponse pour ce questionnaire")
         else:
             form = ColSanteForm(initial=initial_data)
 
