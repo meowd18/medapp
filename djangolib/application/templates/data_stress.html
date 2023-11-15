@@ -6,6 +6,13 @@
 <div>
     <h2>Date du prochain formulaire: {{ prochainFormulaire_date_stress }}</h2>
 </div>
+
+{% if message %}
+<p>{{ message }}</p>
+{% endif %}
+
+{% if remplirProchainFormulaire %}
+
 <p>Remplissez le formulaire suivant en indiquant la fréquence avec laquelle vous avez ressenti ou vécu, au cours des deux dernières semaines, les symptômes décrits.</p>
 <p>
     0: Ce symptôme n’est pas apparu au cours des deux dernières semaines <br>
@@ -30,7 +37,7 @@
         </div>
     </div>
 </form>
-
+{% endif %}
 <style>
   /* Style pour les sous-titres */
   .subtitle {

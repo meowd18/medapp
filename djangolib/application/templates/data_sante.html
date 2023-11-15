@@ -4,7 +4,6 @@
 <title>Formulaire Santé</title>
 
 <h1>Formulaire de santé générale</h1>
-<h2>{{ message }}</h2>
 <div>
   <h2>Date du prochain formulaire: {{ prochainFormulaire_date_sante }}</h2>
 </div>
@@ -15,18 +14,20 @@
 {% endif %}
 
 
+{% if remplirProchainFormulaire %}
 <form id="formContainer" method="post">
   {% csrf_token %}
   {{ form.as_p }}
 
-  <div id="button-container">
-    <div id="nav-buttons">
-      <button type="button" id="prevBtn" style="display: none;">Précédent</button>
-      <button type="button" id="nextBtn">Suivant</button>
-      <button type="submit" id="submitBtn" style="display: none;">Envoyer</button>
+    <div id="button-container">
+      <div id="nav-buttons">
+        <button type="button" id="prevBtn" style="display: none;">Précédent</button>
+        <button type="button" id="nextBtn">Suivant</button>
+        <button type="submit" id="submitBtn" style="display: none;">Envoyer</button>
+      </div>
     </div>
-  </div>
-</form>
+  </form>
+{% endif %}
 
 <style>
   /* Style pour les sous-titres */

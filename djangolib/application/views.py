@@ -52,7 +52,7 @@ def data_stress(request, prochainFormulaire_date_stress=None):
     return render(
         request,
         'data_stress.html',
-        {'form': form, 'prochainFormulaire_date_stress': prochainFormulaire_date_stress, 'message': message}
+        {'form': form, 'prochainFormulaire_date_stress': prochainFormulaire_date_stress, 'message': message, 'remplirProchainFormulaire': remplirProchainFormulaire}
     )
 
 
@@ -71,7 +71,6 @@ def data_sante(request, prochainFormulaire_date_sante=None):
     # Convert prochainFormulaire_str back to datetime.date
     prochainFormulaire_date_sante = datetime.strptime(prochainFormulaire, '%d/%m/%Y').date()
     remplirProchainFormulaire = datetime.now().date() > prochainFormulaire_date_sante
-
     if request.user.role != "patient":
         return redirect("accueil")
     else:
@@ -92,7 +91,7 @@ def data_sante(request, prochainFormulaire_date_sante=None):
     return render(
         request,
         'data_sante.html',
-        {'form': form, 'prochainFormulaire_date_sante': prochainFormulaire_date_sante, 'message': message}
+        {'form': form, 'prochainFormulaire_date_sante': prochainFormulaire_date_sante, 'message': message, 'remplirProchainFormulaire': remplirProchainFormulaire}
     )
 
 
