@@ -8,6 +8,13 @@
 <div>
   <h2>Date du prochain formulaire: {{ prochainFormulaire_date_sante }}</h2>
 </div>
+
+<!-- Add this where you want to display the message -->
+{% if message %}
+<p>{{ message }}</p>
+{% endif %}
+
+
 <form id="formContainer" method="post">
   {% csrf_token %}
   {{ form.as_p }}

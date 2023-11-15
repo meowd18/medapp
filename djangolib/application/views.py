@@ -33,7 +33,7 @@ def data_stress(request, prochainFormulaire_date_stress=None):
     remplirProchainFormulaire = datetime.now().date() > prochainFormulaire_date_stress
 
     if request.user.role != "patient":
-        return redirect ("accueil")
+        return redirect("accueil")
     else:
         prenom = request.user.username
         initial_data = {'prénom': prenom}
@@ -41,28 +41,18 @@ def data_stress(request, prochainFormulaire_date_stress=None):
 
         if request.method == 'POST':
             form = ColStressForm(request.POST, initial=initial_data)
-            if form.is_valid():
-                # Calculer le total à partir des valeurs des champs du formulaire
-                total = 0
-                for field_name, field_value in form.cleaned_data.items():
-                    if field_name != 'user_id' and field_name != 'date':
-                        if field_value is not None:
-                            total += field_value
-
-                # Enregistrez le total dans le formulaire
-                form.instance.total_de_limpact_du_stress_dans_votre_vie_actuelle = total
+            if form.is_valid() and remplirProchainFormulaire:
                 form.save()
-
-                return redirect('accueil')  # Redirigez vers une page de confirmation
+                return redirect('accueil')  # Redirect to a confirmation page
             elif not remplirProchainFormulaire:
-                return HttpResponseBadRequest("Vous ne pouvez pas encore soumettre de réponse pour ce questionnaire")
+                message = "Vous ne pouvez pas encore soumettre de réponse pour ce questionnaire"
         else:
             form = ColStressForm(initial=initial_data)
 
     return render(
         request,
         'data_stress.html',
-        {'form': form, 'prochainFormulaire_date_stress': prochainFormulaire_date_stress}
+        {'form': form, 'prochainFormulaire_date_stress': prochainFormulaire_date_stress, 'message': message}
     )
 
 
@@ -80,33 +70,31 @@ def data_sante(request, prochainFormulaire_date_sante=None):
 
     # Convert prochainFormulaire_str back to datetime.date
     prochainFormulaire_date_sante = datetime.strptime(prochainFormulaire, '%d/%m/%Y').date()
-    #print("periodiciteMedecin:", periodiciteMedecin)
     remplirProchainFormulaire = datetime.now().date() > prochainFormulaire_date_sante
-    #print("remplirProchainFormulaire:", remplirProchainFormulaire)
 
     if request.user.role != "patient":
-        return redirect ("accueil")
+        return redirect("accueil")
     else:
         prenom = request.user.username
         initial_data = {'prénom': prenom}
         initial_data['date'] = date.today().strftime('%d/%m/%Y')
-        #col_stress = col_stress.objects.all()
 
         if request.method == 'POST':
             form = ColSanteForm(request.POST, initial=initial_data)
-            if form.is_valid():
+            if form.is_valid() and remplirProchainFormulaire:
                 form.save()
-                return redirect('accueil')  # Redirigez vers une page de confirmation
+                return redirect('accueil')  # Redirect to a confirmation page
             elif not remplirProchainFormulaire:
-                return HttpResponseBadRequest("Vous ne pouvez pas encore soumettre de réponse pour ce questionnaire")
+                message = "Vous ne pouvez pas encore soumettre de réponse pour ce questionnaire"
         else:
             form = ColSanteForm(initial=initial_data)
 
     return render(
         request,
         'data_sante.html',
-        {'form': form, 'prochainFormulaire_date_sante': prochainFormulaire_date_sante}
+        {'form': form, 'prochainFormulaire_date_sante': prochainFormulaire_date_sante, 'message': message}
     )
+
 
 #interdire accès à une page en fonction du rôle
 '''if request.user.role != "medecin":
