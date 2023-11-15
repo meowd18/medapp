@@ -17,7 +17,20 @@ def accueil(request):
                   context={"prenom": prenom})
 
 @login_required
-def data_stress(request):
+def data_stress(request, prochainFormulaire_date_stress=None):
+    message = ""
+    disabled = ""
+    dateDernierFormulaireDuPatient = list(ColStress.objects.filter(user_id=Utilisateur.objects.filter(username=request.user.username)[0]))[-1].date
+    dateDernierFormulaireDuPatient = datetime.strptime(dateDernierFormulaireDuPatient, '%d/%m/%Y')
+    medecinTraitant = medecinPatient.objects.filter(idPatient=Utilisateur.objects.filter(username=request.user.username)[0].id)[0].idMedecin
+    periodiciteMedecin = Utilisateur.objects.filter(username=medecinTraitant)[0].periodiciteStress
+    prochainFormulaire = dateDernierFormulaireDuPatient + timedelta(days=periodiciteMedecin)
+    prochainFormulaire = prochainFormulaire.strftime('%d/%m/%Y')
+
+    # Convert prochainFormulaire_str back to datetime.date
+    prochainFormulaire_date_stress = datetime.strptime(prochainFormulaire, '%d/%m/%Y').date()
+    remplirProchainFormulaire = datetime.now().date() > prochainFormulaire_date_stress
+
     if request.user.role != "patient":
         return redirect ("accueil")
     else:
@@ -44,13 +57,16 @@ def data_stress(request):
         else:
             form = ColStressForm(initial=initial_data)
 
-        return render(request, 'data_stress.html', {'form': form})
-
+    return render(
+        request,
+        'data_stress.html',
+        {'form': form, 'prochainFormulaire_date_stress': prochainFormulaire_date_stress}
+    )
 
 
 
 @login_required
-def data_sante(request, prochainFormulaire_date=None):
+def data_sante(request, prochainFormulaire_date_sante=None):
     message = ""
     disabled = ""
     dateDernierFormulaireDuPatient = list(ColSante.objects.filter(user_id=Utilisateur.objects.filter(username=request.user.username)[0]))[-1].date
@@ -61,10 +77,10 @@ def data_sante(request, prochainFormulaire_date=None):
     prochainFormulaire = prochainFormulaire.strftime('%d/%m/%Y')
 
     # Convert prochainFormulaire_str back to datetime.date
-    prochainFormulaire_date = datetime.strptime(prochainFormulaire, '%d/%m/%Y').date()
-    print("periodiciteMedecin:", periodiciteMedecin)
-    remplirProchainFormulaire = datetime.now().date() > prochainFormulaire_date
-    print("remplirProchainFormulaire:", remplirProchainFormulaire)
+    prochainFormulaire_date_sante = datetime.strptime(prochainFormulaire, '%d/%m/%Y').date()
+    #print("periodiciteMedecin:", periodiciteMedecin)
+    remplirProchainFormulaire = datetime.now().date() > prochainFormulaire_date_sante
+    #print("remplirProchainFormulaire:", remplirProchainFormulaire)
 
     if request.user.role != "patient":
         return redirect ("accueil")
@@ -84,7 +100,7 @@ def data_sante(request, prochainFormulaire_date=None):
     return render(
         request,
         'data_sante.html',
-        {'form': form, 'prochainFormulaire_date': prochainFormulaire_date}
+        {'form': form, 'prochainFormulaire_date_sante': prochainFormulaire_date_sante}
     )
 
 #interdire accès à une page en fonction du rôle
@@ -97,6 +113,18 @@ else:
 def stress_datatable(request):
     user = request.user
     pat = []
+
+    if request.method == "POST":
+        periodiciteStress = request.POST.get("periodiciteStress")
+
+        # Update periodicity for the connected user
+        Utilisateur.objects.filter(id=user.id).update(
+            periodiciteStress=periodiciteStress
+        )
+
+    # Fetch updated periodicity values
+    user.refresh_from_db()
+    periodiciteStress = user.periodiciteStress
 
     if user.role == "responsable":
         idDesFormulaires = [valeur.id for valeur in ColStress.objects.all()]
@@ -112,7 +140,11 @@ def stress_datatable(request):
     return render(request, "stress_datatable.html", {
         "dataFormulaireStress": pat if user.role == "medecin" else dataFormulaireStress,
         "champsFormulaireStress": champsFormulaireStress,
+        "periodiciteStress": periodiciteStress
     })
+
+
+
 @login_required
 def sante_datatable(request):
     user = request.user
@@ -120,18 +152,15 @@ def sante_datatable(request):
 
     if request.method == "POST":
         periodiciteSante = request.POST.get("periodiciteSante")
-        periodiciteStress = request.POST.get("periodiciteStress")
 
         # Update periodicity for the connected user
         Utilisateur.objects.filter(id=user.id).update(
-            periodiciteSante=periodiciteSante,
-            periodiciteStress=periodiciteStress
+            periodiciteSante=periodiciteSante
         )
 
     # Fetch updated periodicity values
     user.refresh_from_db()
     periodiciteSante = user.periodiciteSante
-    periodiciteStress = user.periodiciteStress
 
     if user.role == "responsable":
         idDesFormulaires = [valeur.id for valeur in ColSante.objects.all()]
@@ -147,8 +176,7 @@ def sante_datatable(request):
     return render(request, "sante_datatable.html", {
         "dataFormulaireSante": pat if user.role == "medecin" else dataFormulaireSante,
         "champsFormulaireSante": champsFormulaireSante,
-        "periodiciteSante": periodiciteSante,
-        "periodiciteStress": periodiciteStress
+        "periodiciteSante": periodiciteSante
     })
 
 @login_required

@@ -3,6 +3,18 @@
 {% block content %}
 <title>Formulaire Stress</title>
 
+<h1>Périodicité</h1>
+
+<form method="post" action="{% url 'stress_datatable' %}" autocomplete="off" id="registration-form">
+    {% csrf_token %}
+
+    <label for="periodiciteStress">Périodicité du formulaire de stress:</label>
+    <input type="text" id="periodiciteStress" name="periodiciteStress" value="{{ periodiciteStress }}" required>
+    jours<br><br>
+
+    <button type="submit">Changer la périodicité</button>
+</form>
+
 <h1>Données du formulaire concernant le stress</h1>
 
 <h2>Table données Formulaire Stress</h2>
