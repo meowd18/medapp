@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<title>Nouveau compte</title>
+
+</head>
+<body>
+
+<h2>Créer un Nouveau Compte</h2>
+
+<form method="post" action="{% url 'nouveau_compte' %}" autocomplete="off">    {% csrf_token %}
+    <label for="first_name">Prénom:</label>
+    <input type="text" id="first_name" name="first_name" required><br>
+    <br>
+    <label for="last_name">Nom:</label>
+    <input type="text" id="last_name" name="last_name" required><br>
+    <br>
+    <label for="email">Adresse email:</label>
+    <input type="text" id="email" name="email" required><br>
+    <br>
+    <label for="role">Rôle:</label>
+    <select id="role" name="role" required>
+        {% for role in roles %}
+        <option value="{{ role }}">{{ role }}</option>
+        {% endfor %}
+    </select><br>
+    <br>
+    <label for="username">Nom d'utilisateur:</label>
+    <input type="text" id="username" name="username"  value="" required><br>
+    <br>
+    <label for="motDePasse">Mot de passe:</label>
+    <input type="password" id="motDePasse" name="motDePasse"  value="" required><br>
+    <br>
+    <button type="submit">Créer le Compte</button>
+</form>
+
+{% endblock %}

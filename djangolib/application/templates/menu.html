@@ -23,6 +23,9 @@
         {% if user.role != "patient" %}
         <li><a href="{% url 'association' %}">Association médecin/patient</a></li>
         {% endif %}
+        {% if user.role != "patient" %}
+        <li><a href="{% url 'nouveau_compte' %}">Créer nouveau compte</a></li>
+        {% endif %}
         <li><a href="{% url 'comptes' %}">Mon compte</a></li>
         <li> <a href="{% url 'deco' %}">Déconnexion</a></li>
     </ul>

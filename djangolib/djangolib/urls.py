@@ -34,6 +34,7 @@ urlpatterns = [
     path('stress_datatable', stress_datatable, name="stress_datatable"),
     path('histo_patient', histo_patient, name="histo_patient"),
     path('edaia', edaia, name="edaia"),
+    path('nouveau_compte', nouveau_compte, name="nouveau_compte"),
 ]
 
 

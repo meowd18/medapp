@@ -168,6 +168,7 @@ def histo_patient(request):
                    "champsFormulaireStress" : champsFormulaireStress})
 
 
+@login_required
 def edaia(request):
     # URL de l'image externe
     image_url = "https://upload.wikimedia.org/wikipedia/commons/1/19/Under_construction_graphic.gif"
@@ -181,9 +182,23 @@ def edaia(request):
 #print(list(utilisateur.username for utilisateur in Utilisateur.objects.filter(role="medecin")))
 
 '''
-list1 = [utilisateur.username for utilisateur in Utilisateur.objects.filter(role="medecin")]
-for utilisateur in Utilisateur.objects.filter(role="patient"):
-    if not medecinPatient.objects.filter(idPatient=utilisateur).exists():
-        list1.append(utilisateur.username)
-print(list1)
+def alimentationPatients():
+    listePatients = pd.read_csv("/Users/narcy/Desktop/revision Django/doctolibbydjango/authentification/datas/listePatients.csv")
+    for index, valeurs in listePatients.iterrows():
+        #champDBB = Utilisateur._meta.get_fields()
+        
+        Utilisateur.objects.create_user(username = valeurs.username,
+                                        password = valeurs.motDePasse,
+                                        role="patient")
+def alimentationMedecin():
+    listeMedecins = pd.read_csv("/Users/narcy/Desktop/revision Django/doctolibbydjango/authentification/datas/listeMedecins.csv")
+    for index, valeurs in listeMedecins.iterrows():
+        Utilisateur.objects.create_user(username = valeurs.username,
+                                        password = valeurs.motDePasse,
+                                        role="medecin")
+        
+if len(Utilisateur.objects.filter(role="patient")) == 0:
+    alimentationPatients()
+if len(Utilisateur.objects.filter(role="medecin")) == 0:
+    alimentationMedecin() 
 '''

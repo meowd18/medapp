@@ -7,6 +7,11 @@ class UtilisateurForm(forms.ModelForm):
         model = Utilisateur
         fields = ["first_name", "last_name", "email"]
 
+class UtilisateurFullForm(forms.ModelForm):
+    class Meta:
+        model = Utilisateur
+        fields = '__all__'
+
 class ModificationMDPForm(forms.Form):
     regexMDP = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+-]).{8,}$"
     ancienMDP = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}))

@@ -6,7 +6,7 @@ import random
 import string
 from django.contrib.auth.decorators import login_required
 from authentification.models import Utilisateur
-from .forms import UtilisateurForm, ModificationMDPForm
+from .forms import UtilisateurForm, ModificationMDPForm, UtilisateurFullForm
 
 
 # Create your views here.
@@ -89,6 +89,44 @@ def comptes(request):
         "modification_mdp_form": modification_mdp_form,
         "utilisateur_form": utilisateur_form,
     })
+
+@login_required
+def nouveau_compte(request):
+    initial_values = {}
+
+    if request.user.role == "responsable":
+        roles = Utilisateur.objects.values_list('role', flat=True).distinct()
+    elif request.user.role == "medecin":
+        roles = ["patient"]
+
+    if request.method == "POST":
+        first_name = request.POST["first_name"]
+        last_name = request.POST["last_name"]
+        email = request.POST["email"]
+        role = request.POST["role"]
+        username = request.POST["username"]
+        motDePasse = request.POST["motDePasse"]
+
+        # Vérifier si l'utilisateur avec cet identifiant existe déjà
+        if Utilisateur.objects.filter(username=username).exists():
+            messages.error(request, 'Cet identifiant d\'utilisateur est déjà pris.')
+        else:
+            nouveauCompte = Utilisateur.objects.create_user(
+                username=username,
+                password=motDePasse,
+                first_name=first_name,
+                role=role,
+                last_name=last_name,
+                email=email
+            )
+            messages.success(request, 'Compte créé avec succès.')
+            return redirect("connexion")
+
+    return render(request, "nouveau_compte.html", {
+        "roles": roles,
+    })
+
+
 
 """
 def alimentationPatients():
