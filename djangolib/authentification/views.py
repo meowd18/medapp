@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from authentification.models import Utilisateur
 from .forms import UtilisateurForm, ModificationMDPForm, UtilisateurFullForm
 from django.http import JsonResponse
+from django.contrib import messages
 
 # Create your views here.
 def connexion(request):
@@ -100,8 +101,6 @@ def get_last_username(request, role):
 
 @login_required
 def nouveau_compte(request):
-    initial_values = {}
-
     if request.user.role == "responsable":
         roles = Utilisateur.objects.values_list('role', flat=True).distinct()
         roles.append("")
@@ -114,13 +113,13 @@ def nouveau_compte(request):
         last_name = request.POST["last_name"]
         email = request.POST["email"]
         role = request.POST["role"]
-        is_superuser = request.POST["is_superuser"]
+        is_superuser = request.POST.get("is_superuser", "0")
         username = request.POST["username"]
         motDePasse = request.POST["motDePasse"]
 
         # Vérifier si l'utilisateur avec cet identifiant existe déjà
         if Utilisateur.objects.filter(username=username).exists():
-            messages.error(request, 'Cet identifiant d\'utilisateur est déjà pris.')
+            messages.error(request, 'Cet identifiant est déjà pris.')
         else:
             nouveauCompte = Utilisateur.objects.create_user(
                 username=username,
@@ -132,11 +131,16 @@ def nouveau_compte(request):
                 email=email
             )
             messages.success(request, 'Compte créé avec succès.')
-            return redirect("connexion")
+
+    # Ajoutez les messages flash dans le contexte de rendu de la page
+    success_messages = [str(message) for message in messages.get_messages(request)]
 
     return render(request, "nouveau_compte.html", {
         "roles": roles,
+        "success_messages": success_messages,
     })
+
+
 
 
 

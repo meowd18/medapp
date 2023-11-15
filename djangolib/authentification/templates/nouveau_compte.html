@@ -8,7 +8,8 @@
 
 <h2>Créer un Nouveau Compte</h2>
 
-<form method="post" action="{% url 'nouveau_compte' %}" autocomplete="off">    {% csrf_token %}
+<form method="post" action="{% url 'nouveau_compte' %}" autocomplete="off" id="registration-form">
+    {% csrf_token %}
     <label for="first_name">Prénom:</label>
     <input type="text" id="first_name" name="first_name" required><br>
     <br>
@@ -42,10 +43,24 @@
     <button type="submit">Créer le Compte</button>
 </form>
 
+<!-- Bloc des messages flash -->
+{% if success_messages %}
+{% for message in success_messages %}
+<div class="alert alert-success" role="alert">
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+
+<!-- Ajoutez ceci à la fin de votre formulaire -->
+<div id="error-message" class="alert alert-danger" role="alert" style="display: none;"></div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var roleDropdown = document.getElementById('role');
     var usernameInput = document.getElementById('username');
+    var errorMessage = document.getElementById('error-message');
+    var form = document.getElementById('registration-form');
 
     roleDropdown.addEventListener('change', function() {
         var selectedRole = roleDropdown.value;
@@ -62,15 +77,39 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     });
 
+    form.addEventListener('submit', function(event) {
+        // Vérifier si l'identifiant est déjà pris
+        var formData = new FormData(form);
+        fetch('/check_username_availability/', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.username_taken) {
+                // Afficher un message en cas d'identifiant déjà pris
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'Cet identifiant d\'utilisateur est déjà pris. Veuillez en choisir un autre.';
+                // Empêcher la soumission du formulaire
+                event.preventDefault();
+            } else {
+                // Le formulaire sera soumis normalement si l'identifiant est disponible
+                errorMessage.style.display = 'none';
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de la vérification de l\'identifiant:', error);
+        });
+    });
+
     function generateUsername(role, lastUsername) {
-        var rolePrefix = role.charAt(0).toUpperCase(); // Utiliser la première lettre du rôle
+        var rolePrefix = role.charAt(0).toUpperCase();
 
         if (lastUsername) {
             var lastNumber = parseInt(lastUsername.slice(-5), 10);
-            lastNumber++;  // Incrémenter le dernier numéro utilisé
+            lastNumber++;
             return rolePrefix + padNumber(lastNumber, 5);
         } else {
-            // Si aucun identifiant n'est enregistré, générer un nouveau
             return rolePrefix + '00001';
         }
     }
@@ -79,8 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return (Array(length).join('0') + number).slice(-length);
     }
 });
+
 </script>
-
-
 
 {% endblock %}

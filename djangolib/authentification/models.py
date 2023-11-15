@@ -13,6 +13,9 @@ class Utilisateur(AbstractUser):
     #medecin = 'medecin'
     #responsable = 'responsable'
 
+    periodiciteSante = models.IntegerField(null=True, blank=True, default=1)
+    periodiciteStress = models.IntegerField(null=True, blank=True, default=5)
+
     lesRoles = {
         ('patient', 'patient'),
         ('medecin', 'medecin'),
