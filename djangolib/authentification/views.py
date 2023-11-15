@@ -7,7 +7,7 @@ import string
 from django.contrib.auth.decorators import login_required
 from authentification.models import Utilisateur
 from .forms import UtilisateurForm, ModificationMDPForm, UtilisateurFullForm
-
+from django.http import JsonResponse
 
 # Create your views here.
 def connexion(request):
@@ -90,20 +90,31 @@ def comptes(request):
         "utilisateur_form": utilisateur_form,
     })
 
+
+def get_last_username(request, role):
+    last_username = Utilisateur.objects.filter(role=role).order_by('-username').first()
+    if last_username:
+        return JsonResponse({'last_username': last_username.username})
+    else:
+        return JsonResponse({'last_username': ''})
+
 @login_required
 def nouveau_compte(request):
     initial_values = {}
 
     if request.user.role == "responsable":
         roles = Utilisateur.objects.values_list('role', flat=True).distinct()
+        roles.append("")
     elif request.user.role == "medecin":
         roles = ["patient"]
+        roles.append("")
 
     if request.method == "POST":
         first_name = request.POST["first_name"]
         last_name = request.POST["last_name"]
         email = request.POST["email"]
         role = request.POST["role"]
+        is_superuser = request.POST["is_superuser"]
         username = request.POST["username"]
         motDePasse = request.POST["motDePasse"]
 
@@ -116,6 +127,7 @@ def nouveau_compte(request):
                 password=motDePasse,
                 first_name=first_name,
                 role=role,
+                is_superuser=is_superuser,
                 last_name=last_name,
                 email=email
             )

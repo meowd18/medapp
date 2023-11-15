@@ -23,15 +23,64 @@
         {% for role in roles %}
         <option value="{{ role }}">{{ role }}</option>
         {% endfor %}
-    </select><br>
+    </select>
     <br>
+    <br>
+    {% if user.role == 'responsable' %}
+    <label for="id_is_superuser">Super utilisateur:</label>
+    <input type="checkbox" id="id_is_superuser" name="is_superuser" value="1">
+    <input type="hidden" name="is_superuser" value="0">
+    <br>
+    <br>
+    {% endif %}
     <label for="username">Nom d'utilisateur:</label>
-    <input type="text" id="username" name="username"  value="" required><br>
+    <input type="text" id="username" name="username" required><br>
     <br>
     <label for="motDePasse">Mot de passe:</label>
     <input type="password" id="motDePasse" name="motDePasse"  value="" required><br>
     <br>
     <button type="submit">Créer le Compte</button>
 </form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var roleDropdown = document.getElementById('role');
+    var usernameInput = document.getElementById('username');
+
+    roleDropdown.addEventListener('change', function() {
+        var selectedRole = roleDropdown.value;
+
+        // Effectuer une requête AJAX pour récupérer le dernier identifiant enregistré
+        fetch(`/get_last_username/${selectedRole}/`)
+            .then(response => response.json())
+            .then(data => {
+                var lastUsername = data.last_username || '';
+                usernameInput.value = generateUsername(selectedRole, lastUsername);
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération du dernier identifiant:', error);
+            });
+    });
+
+    function generateUsername(role, lastUsername) {
+        var rolePrefix = role.charAt(0).toUpperCase(); // Utiliser la première lettre du rôle
+
+        if (lastUsername) {
+            var lastNumber = parseInt(lastUsername.slice(-5), 10);
+            lastNumber++;  // Incrémenter le dernier numéro utilisé
+            return rolePrefix + padNumber(lastNumber, 5);
+        } else {
+            // Si aucun identifiant n'est enregistré, générer un nouveau
+            return rolePrefix + '00001';
+        }
+    }
+
+    function padNumber(number, length) {
+        return (Array(length).join('0') + number).slice(-length);
+    }
+});
+</script>
+
+
 
 {% endblock %}
