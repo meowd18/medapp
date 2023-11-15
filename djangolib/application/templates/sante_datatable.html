@@ -3,6 +3,21 @@
 {% block content %}
 <title>Santé générale</title>
 
+<h1>Périodicité</h1>
+
+<form method="post" action="{% url 'sante_datatable' %}" autocomplete="off" id="registration-form">
+  {% csrf_token %}
+  <label for="periodiciteSante">Périodicité du formulaire de santé:</label>
+  <input type="text" id="periodiciteSante" name="periodiciteSante" value="{{ periodiciteSante }}" required>
+  jours<br><br>
+
+  <label for="periodiciteStress">Périodicité du formulaire de stress:</label>
+  <input type="text" id="periodiciteStress" name="periodiciteStress" value="{{ periodiciteStress }}" required>
+  jours<br><br>
+
+  <button type="submit">Changer la périodicité</button>
+</form>
+
 <h1>Données du formulaire de santé générale</h1>
 
 <h2>Table données Formulaire santé</h2>

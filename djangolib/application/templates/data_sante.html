@@ -4,6 +4,10 @@
 <title>Formulaire Santé</title>
 
 <h1>Formulaire de santé générale</h1>
+<h2>{{ message }}</h2>
+<div>
+  <p>Date du prochain formulaire: {{ prochainFormulaire_date }}</p>
+</div>
 <form id="formContainer" method="post">
   {% csrf_token %}
   {{ form.as_p }}
@@ -130,7 +134,4 @@
     });
 </script>
 
-
-
 {% endblock %}
-
