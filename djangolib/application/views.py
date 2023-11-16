@@ -238,9 +238,9 @@ def edaia(request):
 
 #print(list(utilisateur.username for utilisateur in Utilisateur.objects.filter(role="medecin")))
 
-'''
+
 def alimentationPatients():
-    listePatients = pd.read_csv("/Users/narcy/Desktop/revision Django/doctolibbydjango/authentification/datas/listePatients.csv")
+    listePatients = pd.read_csv("https://raw.githubusercontent.com/data-IA-2022/Doctolib-_-Maud/main/data/listepat.csv")
     for index, valeurs in listePatients.iterrows():
         #champDBB = Utilisateur._meta.get_fields()
         
@@ -248,7 +248,7 @@ def alimentationPatients():
                                         password = valeurs.motDePasse,
                                         role="patient")
 def alimentationMedecin():
-    listeMedecins = pd.read_csv("/Users/narcy/Desktop/revision Django/doctolibbydjango/authentification/datas/listeMedecins.csv")
+    listeMedecins = pd.read_csv("https://raw.githubusercontent.com/data-IA-2022/Doctolib-_-Maud/main/data/listemed.csv")
     for index, valeurs in listeMedecins.iterrows():
         Utilisateur.objects.create_user(username = valeurs.username,
                                         password = valeurs.motDePasse,
@@ -257,5 +257,4 @@ def alimentationMedecin():
 if len(Utilisateur.objects.filter(role="patient")) == 0:
     alimentationPatients()
 if len(Utilisateur.objects.filter(role="medecin")) == 0:
-    alimentationMedecin() 
-'''
+    alimentationMedecin()
