@@ -279,6 +279,36 @@ def alimentationMedecin():
                                         password = valeurs.password,
                                         role="medecin")
 
+def alimentationStress():
+    # Chargez les données depuis le fichier CSV
+    Datastress = pd.read_csv("https://raw.githubusercontent.com/data-IA-2022/Doctolib-_-Maud/main/data/data-stress.csv")
+    # Itérez sur les lignes du DataFrame
+    for index, valeurs in Datastress.iterrows():
+        # Créez un dictionnaire pour stocker les valeurs de chaque colonne
+        colonnes_dict = {}
+        # Itérez sur les colonnes du DataFrame et ajoutez les valeurs au dictionnaire
+        for colonne, valeur in valeurs.items():
+            colonnes_dict[colonne] = valeur
+        # Créez une instance de ColStress avec les données du dictionnaire
+        col_stress_instance = ColStress(**colonnes_dict)
+        # Enregistrez l'instance dans la base de données
+        col_stress_instance.save()
+
+def alimentationSante():
+    # Chargez les données depuis le fichier CSV
+    Datasante = pd.read_csv("https://raw.githubusercontent.com/data-IA-2022/Doctolib-_-Maud/main/data/data-sante.csv")
+    # Itérez sur les lignes du DataFrame
+    for index, valeurs in Datasante.iterrows():
+        # Créez un dictionnaire pour stocker les valeurs de chaque colonne
+        colonnes_dict = {}
+        # Itérez sur les colonnes du DataFrame et ajoutez les valeurs au dictionnaire
+        for colonne, valeur in valeurs.items():
+            colonnes_dict[colonne] = valeur
+        # Créez une instance de ColSante avec les données du dictionnaire
+        col_sante_instance = ColSante(**colonnes_dict)
+        # Enregistrez l'instance dans la base de données
+        col_sante_instance.save()
+
 def modifier_role_superutilisateur():
     # Cherche tous les superutilisateurs
     superusers = Utilisateur.objects.filter(is_superuser=True)
@@ -290,6 +320,16 @@ def modifier_role_superutilisateur():
 
 try:
     modifier_role_superutilisateur()
+except OperationalError as e:
+    print(e)
+
+try:
+    alimentationSante()
+except OperationalError as e:
+    print(e)
+
+try:
+    alimentationStress()
 except OperationalError as e:
     print(e)
 
