@@ -4,13 +4,26 @@
 <title>Formulaire Santé</title>
 
 <h1>Formulaire de santé générale</h1>
+
+<h2>
 {% if prochainFormulaire_date_sante is not None %}
 <div>
-  <h2>Date du prochain formulaire: {{ prochainFormulaire_date_stress }}</h2>
+  Date du prochain formulaire: {{ prochainFormulaire_date_stress }}
 </div>
 {% else %}
-<h2>{{ svp }}</h2>
+{{ svp }}
 {% endif %}
+</h2>
+
+<h3>
+  {% if periodiciteForm != 1 %}
+  Formulaire à remplir tous les {{ periodiciteForm }} jours
+  {% else %}
+  Formulaire à remplir tous les jours
+  {% endif %}
+</h3>
+
+
 
 <!-- Add this where you want to display the message -->
 {% if message %}

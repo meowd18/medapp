@@ -30,11 +30,11 @@ def data_stress(request, prochainFormulaire_date_stress=None):
 
         try:
             medecinTraitant = medecinPatient.objects.filter(idPatient=Utilisateur.objects.filter(username=request.user.username)[0].id)[0].idMedecin
-            periodiciteMedecin = Utilisateur.objects.filter(username=medecinTraitant)[0].periodiciteStress
+            periodiciteForm = Utilisateur.objects.filter(username=medecinTraitant)[0].periodiciteStress
         except:
-            periodiciteMedecin = Utilisateur.objects.filter(username=request.user.username)[0].periodiciteStress
+            periodiciteForm = Utilisateur.objects.filter(username=request.user.username)[0].periodiciteStress
 
-        prochainFormulaire = dateDernierFormulaireDuPatient + timedelta(days=periodiciteMedecin)
+        prochainFormulaire = dateDernierFormulaireDuPatient + timedelta(days=periodiciteForm)
         prochainFormulaire = prochainFormulaire.strftime('%d/%m/%Y')
 
         # Convert prochainFormulaire_str back to datetime.date
@@ -42,10 +42,8 @@ def data_stress(request, prochainFormulaire_date_stress=None):
         remplirProchainFormulaire = datetime.now().date() > prochainFormulaire_date_stress
     except:
         remplirProchainFormulaire = True
-        periodiciteMedecin = Utilisateur.objects.filter(username=request.user.username)[0].periodiciteStress
+        periodiciteForm = Utilisateur.objects.filter(username=request.user.username)[0].periodiciteStress
         svp = "Veuillez remplir votre premier formulaire"
-
-    print(periodiciteMedecin)
 
     if request.user.role != "patient":
         return redirect("accueil")
@@ -67,7 +65,7 @@ def data_stress(request, prochainFormulaire_date_stress=None):
     return render(
         request,
         'data_stress.html',
-        {'form': form, 'prochainFormulaire_date_stress': prochainFormulaire_date_stress, 'message': message, 'svp': svp,'remplirProchainFormulaire': remplirProchainFormulaire}
+        {'form': form, 'prochainFormulaire_date_stress': prochainFormulaire_date_stress, 'message': message, 'periodiciteForm': periodiciteForm, 'svp': svp,'remplirProchainFormulaire': remplirProchainFormulaire}
     )
 
 
@@ -83,11 +81,11 @@ def data_sante(request, prochainFormulaire_date_sante=None):
 
         try:
             medecinTraitant = medecinPatient.objects.filter(idPatient=Utilisateur.objects.filter(username=request.user.username)[0].id)[0].idMedecin
-            periodiciteMedecin = Utilisateur.objects.filter(username=medecinTraitant)[0].periodiciteSante
+            periodiciteForm = Utilisateur.objects.filter(username=medecinTraitant)[0].periodiciteSante
         except:
-            periodiciteMedecin = Utilisateur.objects.filter(username=request.user.username)[0].periodiciteSante
+            periodiciteForm = Utilisateur.objects.filter(username=request.user.username)[0].periodiciteSante
 
-        prochainFormulaire = dateDernierFormulaireDuPatient + timedelta(days=periodiciteMedecin)
+        prochainFormulaire = dateDernierFormulaireDuPatient + timedelta(days=periodiciteForm)
         prochainFormulaire = prochainFormulaire.strftime('%d/%m/%Y')
 
         # Convert prochainFormulaire_str back to datetime.date
@@ -95,10 +93,8 @@ def data_sante(request, prochainFormulaire_date_sante=None):
         remplirProchainFormulaire = datetime.now().date() > prochainFormulaire_date_sante
     except:
         remplirProchainFormulaire = True
-        periodiciteMedecin = Utilisateur.objects.filter(username=request.user.username)[0].periodiciteSante
+        periodiciteForm = Utilisateur.objects.filter(username=request.user.username)[0].periodiciteSante
         svp = "Veuillez remplir votre premier formulaire"
-
-    print(periodiciteMedecin)
 
     if request.user.role != "patient":
         return redirect("accueil")
@@ -120,7 +116,7 @@ def data_sante(request, prochainFormulaire_date_sante=None):
     return render(
         request,
         'data_sante.html',
-        {'form': form, 'prochainFormulaire_date_sante': prochainFormulaire_date_sante, 'message': message, 'svp': svp,'remplirProchainFormulaire': remplirProchainFormulaire}
+        {'form': form, 'prochainFormulaire_date_sante': prochainFormulaire_date_sante, 'message': message, 'periodiciteForm': periodiciteForm, 'svp': svp,'remplirProchainFormulaire': remplirProchainFormulaire}
     )
 
 

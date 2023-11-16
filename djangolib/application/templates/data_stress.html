@@ -11,6 +11,14 @@
 <h2>{{ svp }}</h2>
 {% endif %}
 
+<h3>
+    {% if periodiciteForm != 1 %}
+    Formulaire à remplir tous les {{ periodiciteForm }} jours
+    {% else %}
+    Formulaire à remplir tous les jours
+    {% endif %}
+</h3>
+
 {% if message %}
 <p>{{ message }}</p>
 {% endif %}
