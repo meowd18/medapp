@@ -1,0 +1,71 @@
+id,user_id,date,poids,tour_de_taille_en_cm,fréquence_cardiaque_par_minute,tension_artérielle_systolique_prise_du_matin,tension_artérielle_systolique_prise_du_soir,tension_artérielle_diastolique_prise_du_matin,tension_artérielle_diastolique_prise_du_soir,symptomes_cardiovasculaires_en_quelques_mots,nombre_de_médicaments_pris_dans_la_journée,oubli_de_prendre_les_médicaments_le_matin,oubli_de_prendre_les_médicaments_le_soir,effets_secondaires_remarqués,symptomes_particuliers_remarqués,effets_secondaires_et_ou_symptomes_particuliers_en_quelques_mots,consommation_dalcool,grignotage_sucre,grignotage_sale,nombre_de_repas_pris_durant_la_journée,quantité_deau_bue_en_litre,quantité_dalcool_consommé_en_litre,activité_physique_aujourdhui,nature_de_votre_activité_physique,durée_de_lactivité_physique_en_minutes,présence_de_dyspnée,présence_dœdème,présence_dépisode_infectieux,présence_de_fièvre,présence_de_palpitation,présence_de_douleur_thoracique,présence_de_malaise,heure_de_début_des_palpitations,durée_totale_des_palpitations_en_minutes,heure_de_début_des_douleurs_thoraciques,durée_totale_des_douleurs_thoraciques_en_minutes,heure_de_début_des_malaises,durée_totale_des_malaises_en_minutes
+1,P00001,01/09/2023,75,85,70,121,117,81,80,NaN,0,non,non,non,non,NaN,non,non,non,3,2,0,0,NaN,0,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+2,P00001,02/09/2023,75,85,69,120,123,79,76,NaN,0,non,non,non,non,NaN,non,non,non,3,1.5,0,0,NaN,0,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+3,P00001,03/09/2023,75,84,70,123,120,82,77,NaN,0,non,non,non,non,NaN,non,non,non,3,2,0,30,Marche,45,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+4,P00001,04/09/2023,75,84,71,125,118,84,82,NaN,0,non,non,non,non,NaN,non,non,non,3,2.5,0,45,Course à pied,30,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+5,P00001,05/09/2023,75,84,68,122,121,76,78,NaN,0,non,non,non,non,NaN,oui,oui,non,3,2,1,0,NaN,0,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+6,P00001,06/09/2023,75,85,73,119,119,80,75,NaN,0,non,non,non,non,NaN,non,non,non,3,1.8,0,30,Marche,40,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+7,P00001,07/09/2023,76,85,69,124,115,83,79,NaN,0,non,non,non,non,NaN,non,non,non,3,2,0,45,Natation,60,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+8,P00001,08/09/2023,76,85,69,126,122,78,83,NaN,0,non,non,non,non,NaN,non,non,non,3,2.2,0,0,NaN,0,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+9,P00001,09/09/2023,77,85,72,118,116,77,74,NaN,0,non,non,non,non,NaN,non,non,non,3,2,0,30,Yoga,30,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+10,P00001,10/09/2023,75,85,70,123,124,81,78,NaN,0,non,non,non,non,NaN,non,non,non,3,2,0,0,NaN,0,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+11,P00001,11/09/2023,75,85,74,122,114,75,73,Fatigue,1,non,oui,non,non,NaN,non,non,oui,3,2.5,0,45,Running,30,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+12,P00001,12/09/2023,75,85,68,127,120,85,82,Maux de tête,2,non,non,oui,non,Insomnie,non,non,non,3,2,0,0,NaN,0,oui,non,oui,non,non,non,non,non,non,NaN,0,NaN,0
+13,P00001,13/09/2023,75,85,70,120,119,80,80,Douleur thoracique,1,non,non,non,non,NaN,non,non,non,3,1.8,0,30,Marche rapide,45,oui,non,non,non,oui,non,oui,08:00:00,30,NaN,0,14:00:00,15
+14,P00001,14/09/2023,74,85,75,121,123,82,76,NaN,0,non,non,non,non,NaN,non,non,non,3,2,0,0,NaN,0,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+15,P00001,15/09/2023,75,85,71,117,115,76,81,NaN,0,non,non,non,non,NaN,non,non,non,3,1.5,0,45,Cyclisme,60,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+16,P00001,16/09/2023,75,85,73,124,121,84,77,NaN,0,non,non,non,non,NaN,non,non,non,3,2.5,0,60,Musculation,45,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+17,P00001,17/09/2023,75,85,72,126,116,79,78,Fatigue,1,non,non,non,non,NaN,non,oui,oui,3,2,0,0,NaN,0,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+18,P00001,18/09/2023,75,85,68,125,122,77,75,NaN,0,non,non,non,non,NaN,non,non,non,3,1.8,0,45,Marche,30,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+19,P00001,19/09/2023,75,85,76,118,118,83,79,Maux de tête,2,non,oui,non,oui,Insomnie,oui,non,non,2,1.5,0.5,0,NaN,0,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+20,P00001,20/09/2023,75,85,74,123,119,78,83,NaN,0,non,non,non,non,NaN,non,non,non,2,2,0,30,Cyclisme,60,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+21,P00001,21/09/2023,75,86,70,119,117,75,74,NaN,0,non,non,non,non,NaN,non,non,non,3,2,0,0,NaN,0,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+22,P00001,22/09/2023,75,86,78,122,124,80,78,Maux de tête,1,non,non,oui,non,Insomnie,non,non,non,3,2.5,0,0,NaN,0,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+23,P00001,23/09/2023,75,86,69,121,119,81,81,Douleur thoracique,2,non,non,non,non,NaN,non,non,non,3,1.8,0,45,Marche,30,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+24,P00002,01/09/2023,68,82,72,125,128,78,80,NaN,0,non,non,non,non,NaN,non,non,non,3,2,0,60,Yoga,45,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+25,P00002,02/09/2023,67,82,75,122,127,80,78,NaN,0,non,non,non,non,NaN,non,oui,non,3,1.5,0,30,Cyclisme,60,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+26,P00002,03/09/2023,68,82,76,123,128,85,83,NaN,0,non,non,non,non,NaN,non,non,non,3,2,0,0,NaN,0,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+27,P00002,04/09/2023,68,82,72,126,126,84,82,Fatigue,1,non,non,non,non,NaN,non,non,oui,3,2,0,30,Marche,45,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+28,P00002,05/09/2023,69,81,72,122,125,80,78,NaN,0,non,non,non,non,NaN,non,non,non,3,1.8,0,45,Natation,30,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+29,P00002,06/09/2023,68,81,72,126,124,82,80,Maux de tête,2,non,oui,non,oui,Insomnie,non,oui,non,3,2,0,0,NaN,0,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+30,P00002,07/09/2023,68,83,73,120,121,79,77,NaN,0,non,non,non,non,NaN,non,non,non,3,2,0,30,Cyclisme,60,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+31,P00002,08/09/2023,68,83,74,120,121,80,78,NaN,0,oui,non,non,non,NaN,oui,non,non,3,2,0,0,NaN,0,oui,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+32,P00002,09/09/2023,68,83,70,124,121,85,83,Maux de tête,1,oui,non,non,oui,Insomnie,non,non,non,3,2.5,0,0,NaN,0,non,oui,non,non,non,non,non,non,non,Nan,0,NaN,0
+33,P00002,10/09/2023,67,82,72,118,120,79,77,Douleur thoracique,2,oui,non,non,non,NaN,non,non,non,3,1.8,0,45,Marche,30,non,non,non,non,oui,non,non,non,non,NaN,0,NaN,0
+34,P00002,11/09/2023,67,82,68,126,126,84,82,NaN,0,non,non,non,non,NaN,non,non,non,3,2,0,60,Yoga,45,non,non,non,non,oui,non,non,non,non,NaN,0,NaN,0
+35,P00002,12/09/2023,66,82,75,122,120,80,78,NaN,0,oui,non,non,non,NaN,non,non,non,3,1.5,0,30,Cyclisme,60,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+36,P00002,13/09/2023,68,81,74,120,118,80,78,NaN,0,oui,non,non,non,NaN,non,non,oui,2,2,0,0,NaN,0,oui,non,non,non,non,oui,non,non,non,07:30:00,7,NaN,0
+37,P00002,14/09/2023,68,81,70,121,128,85,83,Maux de tête,1,oui,non,non,oui,Insomnie,non,non,oui,2,2.5,0,0,NaN,0,non,oui,non,non,non,non,non,non,non,Nan,0,Nan,0
+38,P00002,15/09/2023,69,81,72,118,116,79,77,Douleur thoracique,2,oui,non,non,non,NaN,non,non,oui,3,1.8,0,45,Marche,30,non,oui,non,non,oui,non,non,non,non,NaN,0,NaN,0
+39,P00002,16/09/2023,69,81,68,125,126,84,82,NaN,0,non,non,non,non,NaN,non,oui,oui,3,2,0,60,Yoga,45,non,non,non,non,oui,non,non,non,non,NaN,0,NaN,0
+40,P00002,17/09/2023,69,81,75,122,120,80,78,NaN,0,oui,non,non,non,NaN,non,non,oui,3,1.5,0,30,Cyclisme,60,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+41,P00002,18/09/2023,69,81,78,122,120,80,78,NaN,0,non,non,oui,non,Maux de tête,non,non,non,3,2,0,45,Natation,30,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+42,P00002,19/09/2023,69,82,70,123,124,82,80,Douleur thoracique,1,oui,non,oui,non,Insomnie,non,non,non,3,1.8,0,60,Yoga,45,non,oui,non,non,oui,non,non,non,non,NaN,0,NaN,0
+43,P00002,20/09/2023,69,82,75,123,126,85,83,NaN,0,non,oui,non,non,NaN,non,non,oui,3,2,0,30,Cyclisme,60,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+44,P00002,21/09/2023,69,82,74,120,118,78,76,Maux de tête,1,non,non,non,non,NaN,non,non,non,3,2.2,0,45,Marche,45,non,oui,non,non,non,non,non,non,non,NaN,0,NaN,0
+45,P00002,22/09/2023,69,82,78,129,128,85,83,NaN,0,oui,non,non,non,NaN,non,non,non,3,2.8,0,30,Course à pied,30,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+46,P00002,23/09/2023,69,82,70,122,120,80,78,NaN,0,non,non,oui,non,NaN,non,non,oui,3,1.5,0,0,NaN,0,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+47,P00003,01/09/2023,87,95,72,140,138,88,90,Douleur thoracique,2,non,oui,non,non,NaN,non,non,non,3,2.5,0,60,Natation,60,non,oui,non,non,non,non,non,non,non,NaN,0,NaN,0
+48,P00003,02/09/2023,87,95,68,126,124,80,78,NaN,0,oui,non,non,non,NaN,non,oui,oui,3,2,0,45,Cyclisme,30,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+49,P00003,03/09/2023,87,95,76,130,128,84,82,NaN,0,non,non,oui,non,NaN,non,non,non,3,1.8,0,30,Marche,45,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+50,P00003,04/09/2023,87,96,74,120,118,78,76,NaN,0,non,non,non,non,NaN,non,non,non,3,2,0,0,NaN,0,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+51,P00003,05/09/2023,88,96,72,126,124,82,80,Maux de tête,1,non,non,non,non,NaN,non,non,non,3,1.5,0,45,Natation,30,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+52,P00003,06/09/2023,88,96,78,128,126,84,82,NaN,0,non,non,oui,non,NaN,non,non,oui,3,2,0,60,Yoga,60,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+53,P00003,07/09/2023,88,96,80,122,120,80,78,NaN,0,non,non,oui,non,Maux de tête,oui,non,non,3,2,0.25,45,Natation,30,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+54,P00003,08/09/2023,88,95,70,126,124,82,80,Douleur thoracique,1,oui,non,oui,non,Insomnie,non,non,non,3,1.8,0,60,Yoga,45,non,oui,non,non,oui,non,non,non,non,NaN,0,NaN,0
+55,P00003,09/09/2023,88,95,75,128,126,85,83,NaN,0,non,oui,non,non,NaN,non,non,oui,2,2,0,30,Cyclisme,60,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+56,P00003,10/09/2023,88,95,74,120,118,78,76,Maux de tête,1,non,non,non,non,NaN,non,non,non,3,2.2,0,45,Marche,45,non,oui,non,non,non,non,non,non,non,NaN,0,NaN,0
+57,P00003,11/09/2023,88,95,78,130,128,85,83,NaN,0,oui,non,non,non,NaN,non,non,non,3,2.8,0,30,Course à pied,30,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+58,P00003,12/09/2023,88,96,70,122,120,80,78,NaN,0,non,non,oui,non,NaN,non,non,non,3,1.5,0,0,NaN,0,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+59,P00003,13/09/2023,88,96,72,128,126,82,80,Douleur thoracique,2,non,oui,non,non,NaN,non,non,non,3,2.5,0,60,Natation,60,non,oui,non,non,non,non,non,non,non,NaN,0,NaN,0
+60,P00003,14/09/2023,87,96,68,126,124,80,78,NaN,0,oui,non,non,non,NaN,non,non,non,3,2,0,45,Cyclisme,30,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+61,P00003,15/09/2023,87,97,76,130,128,84,82,NaN,0,non,non,oui,non,NaN,non,non,non,3,1.8,0,30,Marche,45,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+62,P00003,16/09/2023,86,97,74,120,118,78,76,NaN,0,non,non,non,non,NaN,oui,non,non,3,2,2,0,NaN,0,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+63,P00003,17/09/2023,88,96,72,126,124,82,80,Maux de tête,1,non,non,non,non,NaN,non,non,non,3,1.5,0,45,Natation,30,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+64,P00003,18/09/2023,88,96,78,128,126,84,82,NaN,0,non,non,oui,non,NaN,non,non,non,3,2,0,60,Yoga,60,non,non,non,non,non,non,non,non,non,Nan,0,Nan,0
+65,P00003,19/09/2023,88,95,80,122,120,80,78,NaN,0,non,non,oui,non,Maux de tête,non,non,non,2,2,0,45,Natation,30,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+66,P00003,20/09/2023,89,95,70,126,124,82,80,Douleur thoracique,1,oui,non,oui,non,Insomnie,non,non,non,3,1.8,0,60,Yoga,45,non,oui,non,non,oui,non,non,non,non,NaN,0,NaN,0
+67,P00003,21/09/2023,88,95,75,128,126,85,83,NaN,0,non,oui,non,non,NaN,non,non,oui,3,2,0,30,Cyclisme,60,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+68,P00003,22/09/2023,88,95,74,120,118,78,76,Maux de tête,1,non,non,non,non,NaN,non,non,non,3,2.2,0,45,Marche,45,non,oui,non,non,non,non,non,non,non,NaN,0,NaN,0
+69,P00003,23/09/2023,88,95,78,130,128,85,83,NaN,0,oui,non,non,non,NaN,non,non,non,3,2.8,0,30,Course à pied,30,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
+70,P00003,24/09/2023,88,95,70,122,120,80,78,NaN,0,non,non,oui,non,NaN,oui,non,non,2,1.5,1.5,0,NaN,0,non,non,non,non,non,non,non,non,non,NaN,0,NaN,0
