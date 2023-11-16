@@ -73,7 +73,7 @@ def data_stress(request, prochainFormulaire_date_stress=None):
 @login_required
 def data_sante(request, prochainFormulaire_date_sante=None):
     message = ""
-    sv = ""
+    svp = ""
     disabled = ""
     try:
         dateDernierFormulaireDuPatient = list(ColSante.objects.filter(user_id=Utilisateur.objects.filter(username=request.user.username)[0]))[-1].date
@@ -180,8 +180,10 @@ def sante_datatable(request):
     periodiciteSante = user.periodiciteSante
 
     if user.role == "responsable":
-        idDesFormulaires = [valeur.id for valeur in ColSante.objects.all()]
-        dataFormulaireSante = [ColSante.objects.filter(id=id).values()[0].values() for id in idDesFormulaires]
+        #idDesFormulaires = [valeur.id for valeur in ColSante.objects.all()]
+        #dataFormulaireSante = [ColSante.objects.filter(id=id).values()[0].values() for id in idDesFormulaires]
+        dataFormulaireSante = [ColSante.objects.filter(id=valeur.id).values()[0].values() for valeur in ColSante.objects.all()]
+
     elif user.role == "medecin":
         for p in medecinPatient.objects.filter(idMedecin=user.id).values():
             username_pat = Utilisateur.objects.get(id=p["idPatient_id"]).username
