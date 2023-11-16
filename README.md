@@ -41,8 +41,8 @@ Le schéma de la base de données utilise les informations des formulaires fourn
 4. Installez les dépendances : `pip install -r requirements.txt`
 5. Créez les migrations pour la partie authentification : `python manage.py makemigrations authentification`
 6. Appliquez les migrations pour la partie authentification : `python manage.py migrate authentification`
-7. Créez les migrations pour la partie application : `python manage.py makemigrations application`
-6. Appliquez les migrations pour la partie application : `python manage.py migrate application`
+7. Créez les autres migrations : `python manage.py makemigrations`
+6. Appliquez les autres migrations : `python manage.py migrate`
 8. Créez un superutilisateur : `python manage.py createsuperuser`
 9. Lancez le serveur de développement : `python manage.py runserver`
 
