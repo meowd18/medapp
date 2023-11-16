@@ -5,6 +5,7 @@ from .models import ColSante, ColStress
 from authentification.models import Utilisateur, medecinPatient
 from datetime import datetime, date, timedelta
 from django.db.utils import OperationalError
+import pandas as pd
 from django.http import HttpResponseBadRequest
 import numpy as np
 
