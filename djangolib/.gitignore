@@ -87,3 +87,14 @@ __pycache__/
 
 # Fichiers spécifiques à pipenv
 Pipfile.lock
+
+# Ajouter les fichiers que vous souhaitez ignorer
+__init__.py
+_dists.py
+_envs.py
+installation_report.py
+
+# Ignorer les répertoires
+venv/
+dist/
+envs/

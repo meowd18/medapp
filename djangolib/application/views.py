@@ -243,18 +243,35 @@ def alimentationPatients():
     listePatients = pd.read_csv("https://raw.githubusercontent.com/data-IA-2022/Doctolib-_-Maud/main/data/listepat.csv")
     for index, valeurs in listePatients.iterrows():
         #champDBB = Utilisateur._meta.get_fields()
-        
+
         Utilisateur.objects.create_user(username = valeurs.username,
-                                        password = valeurs.motDePasse,
+                                        password = valeurs.password,
                                         role="patient")
 def alimentationMedecin():
     listeMedecins = pd.read_csv("https://raw.githubusercontent.com/data-IA-2022/Doctolib-_-Maud/main/data/listemed.csv")
     for index, valeurs in listeMedecins.iterrows():
         Utilisateur.objects.create_user(username = valeurs.username,
-                                        password = valeurs.motDePasse,
+                                        password = valeurs.password,
                                         role="medecin")
-        
-if len(Utilisateur.objects.filter(role="patient")) == 0:
-    alimentationPatients()
-if len(Utilisateur.objects.filter(role="medecin")) == 0:
-    alimentationMedecin()
+
+def modifier_role_superutilisateur():
+    # Cherche tous les superutilisateurs
+    superusers = Utilisateur.objects.filter(is_superuser=True)
+
+    # Modifie le rôle du superutilisateur en 'responsable'
+    for superuser in superusers:
+        superuser.role = 'responsable'
+        superuser.save()
+
+try:
+    modifier_role_superutilisateur()
+except OperationalError as e:
+    print(e)
+
+try:
+    if len(Utilisateur.objects.filter(role="patient")) == 0:
+        alimentationPatients()
+    if len(Utilisateur.objects.filter(role="medecin")) == 0:
+        alimentationMedecin()
+except OperationalError as e:
+    print(e)
