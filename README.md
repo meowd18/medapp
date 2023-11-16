@@ -22,7 +22,8 @@ Ce projet met en œuvre les compétences suivantes :
 
 Le schéma de la base de données utilise les informations des formulaires fournies par les patients.
 
-(schéma BDD)
+![Capture d'écran 1](images/schema_bdd.png)
+*Schéma de la base de données*
 
 ## Mini Tutoriel pour Installer le Projet sur un Poste et le Lancer
 
@@ -37,9 +38,12 @@ Le schéma de la base de données utilise les informations des formulaires fourn
     - Sur Windows : `venv\Scripts\activate`
     - Sur MacOS/Linux : `source venv/bin/activate`
 4. Installez les dépendances : `pip install -r requirements.txt`
-5. Appliquez les migrations : `python manage.py migrate`
-6. Créez un superutilisateur : `python manage.py createsuperuser`
-7. Lancez le serveur de développement : `python manage.py runserver`
+5. Créez les migrations pour la partie authentification : `python manage.py makemigrations authentification`
+6. Appliquez les migrations pour la partie authentification : `python manage.py migrate authentification`
+7. Créez les migrations pour la partie application : `python manage.py makemigrations application`
+6. Appliquez les migrations pour la partie application : `python manage.py migrate application`
+8. Créez un superutilisateur : `python manage.py createsuperuser`
+9. Lancez le serveur de développement : `python manage.py runserver`
 
 Le projet sera disponible à l'adresse [http://localhost:8000](http://localhost:8000). Connectez-vous avec le superutilisateur pour commencer.
 
@@ -50,8 +54,11 @@ Le projet sera disponible à l'adresse [http://localhost:8000](http://localhost:
 ## Versions Futures (V2, V3...)
 
 La version actuelle met en place les fonctionnalités de base. Les versions futures pourraient inclure :
-- Ajout EDA et IA
+- Ajout EDA et IA avec alertes
 - Ajout CSS
 - Intégration de tests unitaires
+- Mise en place de l'envoi d'email avec indentifiants
+- Modification du mdp obligatoire à la première connexion
+- Gestion des fuseaux horaires, devises, mesures
 
 Les futures versions seront définies en fonction des retours des utilisateurs et des besoins évolutifs du projet.
