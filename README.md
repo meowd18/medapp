@@ -37,9 +37,12 @@ Le schéma de la base de données utilise les informations des formulaires fourn
     - Sur Windows : `venv\Scripts\activate`
     - Sur MacOS/Linux : `source venv/bin/activate`
 4. Installez les dépendances : `pip install -r requirements.txt`
-5. Appliquez les migrations : `python manage.py migrate`
-6. Créez un superutilisateur : `python manage.py createsuperuser`
-7. Lancez le serveur de développement : `python manage.py runserver`
+5. Créez les migrations pour la partie authentification : `python manage.py makemigrations authentification`
+6. Appliquez les migrations pour la partie authentification : `python manage.py migrate authentification`
+7. Créez les migrations pour la partie application : `python manage.py makemigrations application`
+6. Appliquez les migrations pour la partie application : `python manage.py migrate application`
+8. Créez un superutilisateur : `python manage.py createsuperuser`
+9. Lancez le serveur de développement : `python manage.py runserver`
 
 Le projet sera disponible à l'adresse [http://localhost:8000](http://localhost:8000). Connectez-vous avec le superutilisateur pour commencer.
 
