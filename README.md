@@ -21,9 +21,10 @@ Ce projet met en œuvre les compétences suivantes :
 ## Données (Schéma de la BDD)
 
 Le schéma de la base de données utilise les informations des formulaires fournies par les patients.
-
-![Capture d'écran 1](images/schema_bdd.png)
+![Capture d'écran 1](https://github.com/data-IA-2022/Doctolib-_-Maud/blob/main/img/schema_bdd.png)
 *Schéma de la base de données*
+*authentification_utilisateur.username = colstress.user_id = colsante.user_id*
+*authentification_medecinpatient.idMedecin_id et authentification_medecinpatient.idPatient_id = authentification_utilisateur.id*
 
 ## Mini Tutoriel pour Installer le Projet sur un Poste et le Lancer
 
