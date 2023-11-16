@@ -4,9 +4,13 @@
 <title>Formulaire Santé</title>
 
 <h1>Formulaire de santé générale</h1>
+{% if prochainFormulaire_date_sante is not None %}
 <div>
-  <h2>Date du prochain formulaire: {{ prochainFormulaire_date_sante }}</h2>
+  <h2>Date du prochain formulaire: {{ prochainFormulaire_date_stress }}</h2>
 </div>
+{% else %}
+<h2>{{ svp }}</h2>
+{% endif %}
 
 <!-- Add this where you want to display the message -->
 {% if message %}

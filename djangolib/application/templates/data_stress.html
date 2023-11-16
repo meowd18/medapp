@@ -3,9 +3,13 @@
 <title>Stress</title>
 <h1>Impact du stress dans votre vie actuelle</h1>
 <h2>{{ message }}</h2>
+{% if prochainFormulaire_date_stress is not None %}
 <div>
     <h2>Date du prochain formulaire: {{ prochainFormulaire_date_stress }}</h2>
 </div>
+{% else %}
+<h2>{{ svp }}</h2>
+{% endif %}
 
 {% if message %}
 <p>{{ message }}</p>

@@ -22,17 +22,22 @@ def accueil(request):
 @login_required
 def data_stress(request, prochainFormulaire_date_stress=None):
     message = ""
+    svp = ""
     disabled = ""
-    dateDernierFormulaireDuPatient = list(ColStress.objects.filter(user_id=Utilisateur.objects.filter(username=request.user.username)[0]))[-1].date
-    dateDernierFormulaireDuPatient = datetime.strptime(dateDernierFormulaireDuPatient, '%d/%m/%Y')
-    medecinTraitant = medecinPatient.objects.filter(idPatient=Utilisateur.objects.filter(username=request.user.username)[0].id)[0].idMedecin
-    periodiciteMedecin = Utilisateur.objects.filter(username=medecinTraitant)[0].periodiciteStress
-    prochainFormulaire = dateDernierFormulaireDuPatient + timedelta(days=periodiciteMedecin)
-    prochainFormulaire = prochainFormulaire.strftime('%d/%m/%Y')
+    try:
+        dateDernierFormulaireDuPatient = list(ColStress.objects.filter(user_id=Utilisateur.objects.filter(username=request.user.username)[0]))[-1].date
+        dateDernierFormulaireDuPatient = datetime.strptime(dateDernierFormulaireDuPatient, '%d/%m/%Y')
+        medecinTraitant = medecinPatient.objects.filter(idPatient=Utilisateur.objects.filter(username=request.user.username)[0].id)[0].idMedecin
+        periodiciteMedecin = Utilisateur.objects.filter(username=medecinTraitant)[0].periodiciteStress
+        prochainFormulaire = dateDernierFormulaireDuPatient + timedelta(days=periodiciteMedecin)
+        prochainFormulaire = prochainFormulaire.strftime('%d/%m/%Y')
 
-    # Convert prochainFormulaire_str back to datetime.date
-    prochainFormulaire_date_stress = datetime.strptime(prochainFormulaire, '%d/%m/%Y').date()
-    remplirProchainFormulaire = datetime.now().date() > prochainFormulaire_date_stress
+        # Convert prochainFormulaire_str back to datetime.date
+        prochainFormulaire_date_stress = datetime.strptime(prochainFormulaire, '%d/%m/%Y').date()
+        remplirProchainFormulaire = datetime.now().date() > prochainFormulaire_date_stress
+    except:
+        remplirProchainFormulaire = True
+        svp = "Veuillez remplir votre premier formulaire"
 
     if request.user.role != "patient":
         return redirect("accueil")
@@ -54,7 +59,7 @@ def data_stress(request, prochainFormulaire_date_stress=None):
     return render(
         request,
         'data_stress.html',
-        {'form': form, 'prochainFormulaire_date_stress': prochainFormulaire_date_stress, 'message': message, 'remplirProchainFormulaire': remplirProchainFormulaire}
+        {'form': form, 'prochainFormulaire_date_stress': prochainFormulaire_date_stress, 'message': message, 'svp': svp,'remplirProchainFormulaire': remplirProchainFormulaire}
     )
 
 
@@ -62,17 +67,23 @@ def data_stress(request, prochainFormulaire_date_stress=None):
 @login_required
 def data_sante(request, prochainFormulaire_date_sante=None):
     message = ""
+    sv = ""
     disabled = ""
-    dateDernierFormulaireDuPatient = list(ColSante.objects.filter(user_id=Utilisateur.objects.filter(username=request.user.username)[0]))[-1].date
-    dateDernierFormulaireDuPatient = datetime.strptime(dateDernierFormulaireDuPatient, '%d/%m/%Y')
-    medecinTraitant = medecinPatient.objects.filter(idPatient=Utilisateur.objects.filter(username=request.user.username)[0].id)[0].idMedecin
-    periodiciteMedecin = Utilisateur.objects.filter(username=medecinTraitant)[0].periodiciteSante
-    prochainFormulaire = dateDernierFormulaireDuPatient + timedelta(days=periodiciteMedecin)
-    prochainFormulaire = prochainFormulaire.strftime('%d/%m/%Y')
+    try:
+        dateDernierFormulaireDuPatient = list(ColSante.objects.filter(user_id=Utilisateur.objects.filter(username=request.user.username)[0]))[-1].date
+        dateDernierFormulaireDuPatient = datetime.strptime(dateDernierFormulaireDuPatient, '%d/%m/%Y')
+        medecinTraitant = medecinPatient.objects.filter(idPatient=Utilisateur.objects.filter(username=request.user.username)[0].id)[0].idMedecin
+        periodiciteMedecin = Utilisateur.objects.filter(username=medecinTraitant)[0].periodiciteSante
+        prochainFormulaire = dateDernierFormulaireDuPatient + timedelta(days=periodiciteMedecin)
+        prochainFormulaire = prochainFormulaire.strftime('%d/%m/%Y')
 
-    # Convert prochainFormulaire_str back to datetime.date
-    prochainFormulaire_date_sante = datetime.strptime(prochainFormulaire, '%d/%m/%Y').date()
-    remplirProchainFormulaire = datetime.now().date() > prochainFormulaire_date_sante
+        # Convert prochainFormulaire_str back to datetime.date
+        prochainFormulaire_date_sante = datetime.strptime(prochainFormulaire, '%d/%m/%Y').date()
+        remplirProchainFormulaire = datetime.now().date() > prochainFormulaire_date_sante
+    except:
+        remplirProchainFormulaire = True
+        svp = "Veuillez remplir votre premier formulaire"
+
     if request.user.role != "patient":
         return redirect("accueil")
     else:
@@ -93,7 +104,7 @@ def data_sante(request, prochainFormulaire_date_sante=None):
     return render(
         request,
         'data_sante.html',
-        {'form': form, 'prochainFormulaire_date_sante': prochainFormulaire_date_sante, 'message': message, 'remplirProchainFormulaire': remplirProchainFormulaire}
+        {'form': form, 'prochainFormulaire_date_sante': prochainFormulaire_date_sante, 'message': message, 'svp': svp,'remplirProchainFormulaire': remplirProchainFormulaire}
     )
 
 
