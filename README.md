@@ -50,9 +50,26 @@ Le projet sera disponible à l'adresse [http://localhost:8000](http://localhost:
 
 ## Screenshots du Résultat Final
 
-(captures d'écran)
+![Capture d'écran 2](https://github.com/data-IA-2022/Doctolib-_-Maud/blob/main/img/association.png)
+*Page d'association médecin/patient, admin VS médecin*
 
-## Versions Futures (V2, V3...)
+![Capture d'écran 3](https://github.com/data-IA-2022/Doctolib-_-Maud/blob/main/img/nouveau_compte.png)
+*Page de création d'un nouveau compte, admin VS médecin*
+
+![Capture d'écran 4](https://github.com/data-IA-2022/Doctolib-_-Maud/blob/main/img/sante_generale.png)
+*Page du questionnaire de santé générale, patient VS médecin*
+
+![Capture d'écran 4](https://github.com/data-IA-2022/Doctolib-_-Maud/blob/main/img/stress.png)
+*Page du questionnaire de stress, patient VS médecin*
+
+![Capture d'écran 4](https://github.com/data-IA-2022/Doctolib-_-Maud/blob/main/img/historique.png)
+*Page de l'historique patient*
+
+![Capture d'écran 4](https://github.com/data-IA-2022/Doctolib-_-Maud/blob/main/img/mon_compte.png)
+*Page de modification du compte*
+
+
+## Versions Futures
 
 La version actuelle met en place les fonctionnalités de base. Les versions futures pourraient inclure :
 - Ajout EDA et IA avec alertes
@@ -61,5 +78,3 @@ La version actuelle met en place les fonctionnalités de base. Les versions futu
 - Mise en place de l'envoi d'email avec indentifiants
 - Modification du mdp obligatoire à la première connexion
 - Gestion des fuseaux horaires, devises, mesures
-
-Les futures versions seront définies en fonction des retours des utilisateurs et des besoins évolutifs du projet.
