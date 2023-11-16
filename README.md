@@ -22,7 +22,8 @@ Ce projet met en œuvre les compétences suivantes :
 
 Le schéma de la base de données utilise les informations des formulaires fournies par les patients.
 
-(schéma BDD)
+![Capture d'écran 1](images/schema_bdd.png)
+*Schéma de la base de données*
 
 ## Mini Tutoriel pour Installer le Projet sur un Poste et le Lancer
 
