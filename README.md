@@ -53,8 +53,11 @@ Le projet sera disponible à l'adresse [http://localhost:8000](http://localhost:
 ## Versions Futures (V2, V3...)
 
 La version actuelle met en place les fonctionnalités de base. Les versions futures pourraient inclure :
-- Ajout EDA et IA
+- Ajout EDA et IA avec alertes
 - Ajout CSS
 - Intégration de tests unitaires
+- Mise en place de l'envoi d'email avec indentifiants
+- Modification du mdp obligatoire à la première connexion
+- Gestion des fuseaux horaires, devises, mesures
 
 Les futures versions seront définies en fonction des retours des utilisateurs et des besoins évolutifs du projet.
