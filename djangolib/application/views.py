@@ -173,6 +173,7 @@ def sante_datatable(request):
 
 @login_required
 def association(request):
+    prenom = request.user.username
     if request.user.role == "patient":
         return redirect ("accueil") #ou autre page disant que fais-tu là
     else:
@@ -203,7 +204,7 @@ def association(request):
         return render(request, "association.html",
                       {"listePatientsNonAssocies": listePatientsNonAssocies,
                        "medecinsID": medecinsID,
-                       "tableAssociation" : tableAssociation})
+                       "tableAssociation" : tableAssociation, "prenom": prenom})
 
 @login_required
 def histo_patient(request):

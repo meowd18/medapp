@@ -112,6 +112,7 @@ def get_last_username(request, role):
 def nouveau_compte(request):
     if request.user.role == "responsable":
         roles = Utilisateur.objects.values_list('role', flat=True).distinct()
+        roles = list(roles)
         roles.append("")
     elif request.user.role == "medecin":
         roles = ["patient"]
