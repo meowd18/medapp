@@ -21,7 +21,7 @@ Ce projet met en œuvre les compétences suivantes :
 ## Données (Schéma de la BDD)
 
 Le schéma de la base de données utilise les informations des formulaires fournies par les patients.
-![Capture d'écran 1]([https://github.com/votre_nom_utilisateur/votre_depot/blob/master/images/screenshot1.png](https://github.com/data-IA-2022/Doctolib-_-Maud/blob/main/img/schema_bdd.png))
+![Capture d'écran 1](https://github.com/data-IA-2022/Doctolib-_-Maud/blob/main/img/schema_bdd.png)
 *Schéma de la base de données*
 
 ## Mini Tutoriel pour Installer le Projet sur un Poste et le Lancer
