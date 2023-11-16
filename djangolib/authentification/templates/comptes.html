@@ -11,6 +11,10 @@
     <li>Il doit contenir au moins un chiffre (0-9).</li>
     <li>Il doit contenir au moins un caractère spécial parmi !@#$%^&*()_+-.</li>
 </ul>
+
+<p>Voici une idée de Mot de passe :<br>
+    {{ ideeMDP }}
+
 <form method="post" action="{% url 'comptes' %}">
     {{ message }}<br>
     {% csrf_token %}

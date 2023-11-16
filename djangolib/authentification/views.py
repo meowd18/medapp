@@ -33,7 +33,11 @@ def deco(request):
     return redirect("connexion")
 
 def inscription(request):
-    ideeMDP = "".join([random.choice(string.printable) for _ in range(12)]).replace(" ", "")
+    #ideeMDP = "".join([random.choice(string.printable) for _ in range(12)]).replace(" ", "")
+    ideeMDP = ""
+    while not re.match(regexMDP, ideeMDP):
+        ideeMDP = "".join([random.choice(string.ascii_letters + string.digits + r"!@#$%^&*()_+-") for _ in range(12)])
+
     if request.method == "POST":
         username = request.POST["username"]
         motDePasse = request.POST["motDePasse"]
@@ -51,6 +55,10 @@ def inscription(request):
 def comptes(request):
     regexMDP = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+-]).{8,}$"
     message = ""
+    #ideeMDP = "".join([random.choice(string.printable) for _ in range(12)]).replace(" ", "")
+    ideeMDP = ""
+    while not re.match(regexMDP, ideeMDP):
+        ideeMDP = "".join([random.choice(string.ascii_letters + string.digits + r"!@#$%^&*()_+-") for _ in range(12)])
 
     # Passer value='' au champ 'ancienMDP' pour éviter la pré-remplissage
     modification_mdp_form = ModificationMDPForm()
@@ -89,6 +97,7 @@ def comptes(request):
         "message": message,
         "modification_mdp_form": modification_mdp_form,
         "utilisateur_form": utilisateur_form,
+        "ideeMDP" : ideeMDP.replace(" ", "")
     })
 
 
