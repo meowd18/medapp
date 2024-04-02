@@ -5,7 +5,9 @@ from .models import ColSante, ColStress
 from authentification.models import Utilisateur, medecinPatient
 from datetime import datetime, date, timedelta
 from django.db.utils import OperationalError
+from django.db import connections
 import pandas as pd
+from .utils import *
 #from django.http import HttpResponseBadRequest
 #import numpy as np
 
@@ -55,7 +57,9 @@ def data_stress(request, prochainFormulaire_date_stress=None):
         if request.method == 'POST':
             form = ColStressForm(request.POST, initial=initial_data)
             if form.is_valid() and remplirProchainFormulaire:
+                add_bug()
                 form.save()
+                connections['default'].settings_dict = connections['default'].settings_dict
                 return redirect('accueil')  # Redirect to a confirmation page
             elif not remplirProchainFormulaire:
                 message = "Vous ne pouvez pas encore soumettre de réponse pour ce questionnaire"
@@ -106,7 +110,9 @@ def data_sante(request, prochainFormulaire_date_sante=None):
         if request.method == 'POST':
             form = ColSanteForm(request.POST, initial=initial_data)
             if form.is_valid() and remplirProchainFormulaire:
+                add_bug()
                 form.save()
+                connections['default'].settings_dict = connections['default'].settings_dict
                 return redirect('accueil')  # Redirect to a confirmation page
             elif not remplirProchainFormulaire:
                 message = "Vous ne pouvez pas encore soumettre de réponse pour ce questionnaire"
