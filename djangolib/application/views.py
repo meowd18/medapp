@@ -8,6 +8,12 @@ from django.db.utils import OperationalError
 from django.db import connections
 import pandas as pd
 from .utils import *
+import mlflow, logging
+
+logging.basicConfig(level=logging.DEBUG)
+
+init_mlflow()
+
 #from django.http import HttpResponseBadRequest
 #import numpy as np
 
@@ -23,9 +29,12 @@ def accueil(request):
 
 @login_required
 def data_stress(request, prochainFormulaire_date_stress=None):
+    connections['default'].settings_dict = connections['default'].settings_dict
     message = ""
     svp = ""
     disabled = ""
+    form_name = "stress"
+    table_name = "col_stress"
     try:
         dateDernierFormulaireDuPatient = list(ColStress.objects.filter(user_id=Utilisateur.objects.filter(username=request.user.username)[0]))[-1].date
         dateDernierFormulaireDuPatient = datetime.strptime(dateDernierFormulaireDuPatient, '%d/%m/%Y')
@@ -57,8 +66,23 @@ def data_stress(request, prochainFormulaire_date_stress=None):
         if request.method == 'POST':
             form = ColStressForm(request.POST, initial=initial_data)
             if form.is_valid() and remplirProchainFormulaire:
-                add_bug()
-                form.save()
+                handle_bug(form, form_name, prenom)
+                '''try:
+                    print("AVANT:", form._state.db)
+                    form.save()
+                    print("APRèS:", form._state.db)
+                    logging.debug('insertion successful')
+                    with mlflow.start_run():
+                        mlflow.log_metric("is_insertion_successful", 1)
+                        mlflow.log_param("form", form_name)
+                        mlflow.log_param("user", prenom)
+                except Exception as e:
+                    logging.debug('insertion failed')
+                    with mlflow.start_run():
+                        mlflow.log_metric("is_insertion_successful", 0)
+                        mlflow.log_param("error_message", str(e))
+                        mlflow.log_param("form", form_name)
+                        mlflow.log_param("user", prenom)'''
                 connections['default'].settings_dict = connections['default'].settings_dict
                 return redirect('accueil')  # Redirect to a confirmation page
             elif not remplirProchainFormulaire:
@@ -76,9 +100,13 @@ def data_stress(request, prochainFormulaire_date_stress=None):
 
 @login_required
 def data_sante(request, prochainFormulaire_date_sante=None):
+    connections['default'].settings_dict = connections['default'].settings_dict
     message = ""
     svp = ""
     disabled = ""
+    form_name = "santé"
+    table_name = "col_sante"
+
     try:
         dateDernierFormulaireDuPatient = list(ColSante.objects.filter(user_id=Utilisateur.objects.filter(username=request.user.username)[0]))[-1].date
         dateDernierFormulaireDuPatient = datetime.strptime(dateDernierFormulaireDuPatient, '%d/%m/%Y')
@@ -110,9 +138,24 @@ def data_sante(request, prochainFormulaire_date_sante=None):
         if request.method == 'POST':
             form = ColSanteForm(request.POST, initial=initial_data)
             if form.is_valid() and remplirProchainFormulaire:
-                add_bug()
-                form.save()
-                connections['default'].settings_dict = connections['default'].settings_dict
+                handle_bug(form, form_name, prenom)
+                '''try:
+                    handle_bug()
+                    print("AVANT:", form._state.db)
+                    form.save()
+                    print("APRèS:", form._state.db)
+                    logging.debug('insertion successful')
+                    with mlflow.start_run():
+                        mlflow.log_metric("is_insertion_successful", 1)
+                        mlflow.log_param("form", form_name)
+                        mlflow.log_param("user", prenom)
+                except Exception as e:
+                    logging.debug('insertion failed')
+                    with mlflow.start_run():
+                        mlflow.log_metric("is_insertion_successful", 0)
+                        mlflow.log_param("error_message", str(e))
+                        mlflow.log_param("form", form_name)
+                        mlflow.log_param("user", prenom)'''
                 return redirect('accueil')  # Redirect to a confirmation page
             elif not remplirProchainFormulaire:
                 message = "Vous ne pouvez pas encore soumettre de réponse pour ce questionnaire"
