@@ -4,6 +4,12 @@
 <title>Accueil</title>
 
     <h1> Bonjour {{prenom}} !</h1>
+
+<p>
+    {% if message %}
+<div>{{ message }}</div>
+    {% endif %}
+</p>
     <a href="{% url 'deco' %}">
         <button>Déconnexion</button>
     </a>

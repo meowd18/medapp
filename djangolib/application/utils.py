@@ -44,6 +44,8 @@ def handle_bug(form, form_name, prenom):
                 mlflow.log_metric("is_insertion_successful", 1)
                 mlflow.log_param("form", form_name)
                 mlflow.log_param("user", prenom)
+                message = 'Votre formulaire a bien été enregistré'
+                return message
         except Exception as e:
             logging.debug('insertion failed')
             with mlflow.start_run():
@@ -51,6 +53,9 @@ def handle_bug(form, form_name, prenom):
                 mlflow.log_param("error_message", str(e))
                 mlflow.log_param("form", form_name)
                 mlflow.log_param("user", prenom)
+                message = "Un problème est survenu lors de l'enregistrement de votre formulaire, veuillez réessayer. Si l'erreur persiste, merci de contacter votre médecin traitant."
+                return message
+
         finally:
             #dans tous les cas, on vérifie le seuil
             #le cas échéant on envoie une alerte discord

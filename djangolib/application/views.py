@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .forms import ColStressForm, ColSanteForm
 from .models import ColSante, ColStress
@@ -22,10 +23,12 @@ init_mlflow()
 # Create your views here.
 @login_required
 def accueil(request):
+    message = request.GET.get('message', None)
     prenom = request.user.username
     return render(request,
                   "accueil.html",
-                  context={"prenom": prenom})
+                  context={"prenom": prenom,
+                           "message": message})
 
 @login_required
 def data_stress(request, prochainFormulaire_date_stress=None):
@@ -66,25 +69,9 @@ def data_stress(request, prochainFormulaire_date_stress=None):
         if request.method == 'POST':
             form = ColStressForm(request.POST, initial=initial_data)
             if form.is_valid() and remplirProchainFormulaire:
-                handle_bug(form, form_name, prenom)
-                '''try:
-                    print("AVANT:", form._state.db)
-                    form.save()
-                    print("APRèS:", form._state.db)
-                    logging.debug('insertion successful')
-                    with mlflow.start_run():
-                        mlflow.log_metric("is_insertion_successful", 1)
-                        mlflow.log_param("form", form_name)
-                        mlflow.log_param("user", prenom)
-                except Exception as e:
-                    logging.debug('insertion failed')
-                    with mlflow.start_run():
-                        mlflow.log_metric("is_insertion_successful", 0)
-                        mlflow.log_param("error_message", str(e))
-                        mlflow.log_param("form", form_name)
-                        mlflow.log_param("user", prenom)'''
-                connections['default'].settings_dict = connections['default'].settings_dict
-                return redirect('accueil')  # Redirect to a confirmation page
+                message = handle_bug(form, form_name, prenom)
+                #connections['default'].settings_dict = connections['default'].settings_dict
+                return redirect(reverse('accueil') + f'?message={message}')  # Redirect to a confirmation page
             elif not remplirProchainFormulaire:
                 message = "Vous ne pouvez pas encore soumettre de réponse pour ce questionnaire"
         else:
@@ -138,25 +125,8 @@ def data_sante(request, prochainFormulaire_date_sante=None):
         if request.method == 'POST':
             form = ColSanteForm(request.POST, initial=initial_data)
             if form.is_valid() and remplirProchainFormulaire:
-                handle_bug(form, form_name, prenom)
-                '''try:
-                    handle_bug()
-                    print("AVANT:", form._state.db)
-                    form.save()
-                    print("APRèS:", form._state.db)
-                    logging.debug('insertion successful')
-                    with mlflow.start_run():
-                        mlflow.log_metric("is_insertion_successful", 1)
-                        mlflow.log_param("form", form_name)
-                        mlflow.log_param("user", prenom)
-                except Exception as e:
-                    logging.debug('insertion failed')
-                    with mlflow.start_run():
-                        mlflow.log_metric("is_insertion_successful", 0)
-                        mlflow.log_param("error_message", str(e))
-                        mlflow.log_param("form", form_name)
-                        mlflow.log_param("user", prenom)'''
-                return redirect('accueil')  # Redirect to a confirmation page
+                message = handle_bug(form, form_name, prenom)
+                return redirect(reverse('accueil') + f'?message={message}')  # Redirect to a confirmation page
             elif not remplirProchainFormulaire:
                 message = "Vous ne pouvez pas encore soumettre de réponse pour ce questionnaire"
         else:
