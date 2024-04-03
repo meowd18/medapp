@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+    <title>Question Answering</title>
+{% if message %}
+{{ message }}
+{% endif %}
+<form method="post">
+    {% csrf_token %}
+    <label>
+        <b>Posez une question</b><br>
+        Exemple: <i>Quels sont les formulaires que je peux remplir ?</i><br>
+    </label><br>
+    <!-- on récupère le SMILES -->
+    <textarea name="question" rows="4" cols="50"></textarea>
+    <br>
+    <button type="submit">Valider</button>
+</form>
+{% if result %}
+<p>Résultat de la question-réponse :</p>
+<p>{{ result }}</p>
+{% endif %}
+{% endblock %}

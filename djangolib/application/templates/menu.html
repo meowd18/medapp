@@ -17,6 +17,7 @@
         {% if user.role == "patient" %}
         <li><a href="{% url 'histo_patient' %}">Historique</a></li>
         {% endif %}
+        <li><a href="{% url 'qanda' %}">Q&A (IA)</a></li>
         {% if user.role != "patient" %}
         <li><a href="{% url 'edaia' %}">EDA et IA</a></li>
         {% endif %}

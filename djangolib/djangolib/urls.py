@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from application.views import *
 from authentification.views import *
+from api.views import *
 
 
 urlpatterns = [
@@ -36,6 +37,7 @@ urlpatterns = [
     path('edaia', edaia, name="edaia"),
     path('get_last_username/<str:role>/', get_last_username, name='get_last_username'),
     path('nouveau_compte', nouveau_compte, name="nouveau_compte"),
+    path("qanda/", qanda, name="qanda"),
 ]
 
 
