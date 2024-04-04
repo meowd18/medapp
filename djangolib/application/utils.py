@@ -60,7 +60,10 @@ def handle_bug(form, form_name, prenom):
 
     try:
         if not check_default_database_existence(): #si la bdd n'est pas trouvée
-            pass #prévenir utilisateur, bloquer formulaires, envoyer alerte
+            message = 'Un problème est survenu. Nos équipes tentent de la résoudre au plus vite. Toutes nos excuses pour la gêne occassionée.'
+            send_alert_discord("Alerte base de donées", f":rotating_light: La base de données n'a pas été trouvée lors de l'envoi du formulaire {form_name} par le patient {prenom}."
+                                                f"\n Des mesures curatives doivent être prises au plus vite.")
+            return message
         if not check_database_connection(cursor): #si la connexion est fermée
             #rouvrir la bdd
             reset_queries()
@@ -74,7 +77,7 @@ def handle_bug(form, form_name, prenom):
                 mlflow.log_metric("is_insertion_successful", 1)
                 mlflow.log_param("form", form_name)
                 mlflow.log_param("user", prenom)
-                message = 'Votre formulaire a bien été enregistré'
+                message = f'Votre formulaire concernant les données de {form_name} a bien été enregistré'
                 return message
     except Exception as e:
         print(str(e))
@@ -85,7 +88,7 @@ def handle_bug(form, form_name, prenom):
             mlflow.log_param("error_message", str(e))
             mlflow.log_param("form", form_name)
             mlflow.log_param("user", prenom)
-            message = "Un problème est survenu lors de l'enregistrement de votre formulaire, veuillez réessayer ultérieurement. Si l'erreur persiste, merci de contacter votre médecin traitant."
+            message = f"Un problème est survenu lors de l'enregistrement de votre formulaire concernant les données de {form_name}, veuillez réessayer ultérieurement. Si l'erreur persiste, merci de contacter votre médecin traitant."
             return message
 
     finally:
@@ -175,4 +178,4 @@ def handle_bug(form, form_name, prenom):
             msg = "Echec de l'enregistrement de vos données, veuillez réessayer ultérieurement. Si le problème persiste, contactez votre médecin traitant."
             #générer le message d'alerte pour Discord
             send_alert_discord("Alerte MLflow", f"Le seuil d'échecs ({threshold} envois sur {metrics}) a été atteint."
-                  DB                              f"\n Le ou les problèmes suivants ont causé l'alerte: {issue}")
+                                                f"\n Le ou les problèmes suivants ont causé l'alerte: {issue}")
