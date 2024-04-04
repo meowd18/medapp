@@ -3,6 +3,7 @@ from django.db import connections, OperationalError, reset_queries, close_old_co
 from django.conf import settings
 logging.basicConfig(level=logging.DEBUG)
 
+#initialisation de l'expérience sur serveur mlflow
 def init_mlflow():
     mlflow.set_tracking_uri("sqlite:////home/greta/alternance/medapp/mlflow.db")
     mlflow.set_experiment("database_access_monitoring")
@@ -24,37 +25,36 @@ def send_alert_discord(subject, body):
         logging.info(f'Error sending Discord alert: {e}')
 
 def check_default_database_existence():
-    # Récupérer le chemin de la base de données à partir des paramètres de configuration de Django
+    #vérifier la présence de la bdd à l'endroit spécifié
     db_path = settings.DATABASES['default']['NAME']
 
-    # Vérifier si le fichier de base de données existe
+    #vérifier si le fichier existe
     if os.path.exists(db_path):
-        print(f"La base de données par défaut existe à l'emplacement: {db_path}")
+        logging.debug(f"La base de données par défaut existe à l'emplacement: {db_path}")
         return True
     else:
-        print(f"La base de données par défaut n'existe pas à l'emplacement: {db_path}")
+        logging.debug(f"La base de données par défaut n'existe pas à l'emplacement: {db_path}")
         return False
 
 def check_database_connection(cursor):
+    #vérifier la connexion à la bdd
     try:
-        # Exécutez une requête simple ici, par exemple :
         cursor.execute("SELECT 1")
-        # Si la requête s'exécute sans erreur, cela signifie que la connexion fonctionne correctement
-        print("La connexion à la base de données fonctionne correctement.")
+        logging.debug("La connexion à la base de données fonctionne correctement.")
         return True
     except Exception as e:
-        # En cas d'erreur de connexion
-        print("Erreur lors de la connexion à la base de données:", e)
+        logging.debug("Erreur lors de la connexion à la base de données:", e)
         return False
 
 def handle_bug(form, form_name, prenom):
-    # Générer un nombre aléatoire pour déterminer s'il y aura un bug
+    #génération d'un nombre aléatoire pour déterminer s'il y aura un bug
     x = random.randint(1, 100)
     bdd = 'default'
     with connections[bdd].cursor() as cursor:
-        if x == 0:
+        if (x % 2) == 0:
             logging.debug(f'{x}: no bug should arise')
         else:
+            #fermeture de la connexion pour simuler une panne
             logging.debug(f'{x}: bug inserted')
             cursor.connection.close()
 
@@ -62,10 +62,11 @@ def handle_bug(form, form_name, prenom):
         if not check_default_database_existence(): #si la bdd n'est pas trouvée
             pass #prévenir utilisateur, bloquer formulaires, envoyer alerte
         if not check_database_connection(cursor): #si la connexion est fermée
+            #rouvrir la bdd
             reset_queries()
             close_old_connections()
             connections[bdd].ensure_connection()
-            print("La connexion à la base de données a été rétablie avec succès.")
+            logging.debug("La connexion à la base de données a été rétablie avec succès.")
         with connections[bdd].cursor() as cursor:
             form.save()
             logging.debug('insertion successful')
@@ -174,4 +175,4 @@ def handle_bug(form, form_name, prenom):
             msg = "Echec de l'enregistrement de vos données, veuillez réessayer ultérieurement. Si le problème persiste, contactez votre médecin traitant."
             #générer le message d'alerte pour Discord
             send_alert_discord("Alerte MLflow", f"Le seuil d'échecs ({threshold} envois sur {metrics}) a été atteint."
-                                                f"\n Le ou les problèmes suivants ont causé l'alerte: {issue}")
+                  DB                              f"\n Le ou les problèmes suivants ont causé l'alerte: {issue}")
