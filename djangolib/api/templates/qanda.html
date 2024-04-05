@@ -15,8 +15,13 @@
     <br>
     <button type="submit">Valider</button>
 </form>
+{% if question %}
+<p>Question :</p>
+<p>{{ question }}</p>
+{% endif %}
+<br>
 {% if result %}
-<p>Résultat de la question-réponse :</p>
+<p>Réponse :</p>
 <p>{{ result }}</p>
 {% endif %}
 {% endblock %}

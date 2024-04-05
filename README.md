@@ -3,10 +3,17 @@
 
 ## Résumé du contexte et de la demande
 
-Ce projet vise à créer une plateforme de gestion médicale. Un administrateur attribue des comptes aux médecins, peut consulter l'ensemble des patients inscrits ainsi que l'historique de leurs formulaires dans un tableau avec filtres dynamiques, attribuer des rôles et associer les patients à des médecins.
+Ce projet vise à créer une plateforme de gestion médicale permettant de recueillir des données de santé auprès de patients volontaires via deux formulaires, et ce à deux fins:
+- simplifier le suivi des patients inscrits
+- obtenir des données générales qui seront anonymisées et agrégées afin d'obtenir une vue d'ensemble de la santé en France.
+Un administrateur attribue des comptes aux médecins, peut consulter l'ensemble des patients inscrits ainsi que l'historique de leurs réponses aux formulaires dans un tableau avec filtres dynamiques, attribuer des rôles (médecin, patient, administrateur) et associer les patients à des médecins traitants.
 Les médecins peuvent créer des comptes patients, mais pas les associer à un médecin. Ils peuvent voir l'historique des formulaires remplis par les patients qui leur sont associés dans un tableau avec filtres dynamiques, et modifier la périodicité à laquelle les patient doivent les remplir.
-Les patients remplissent des formulaires avec des informations médicales.
-Chaque utilisateur peut modifier son mot de passe et ses informations personnelles. Une suggestion de mot de passe respectant la contrainte est proposée au moment de l'inscription et au moment de la modification du mot de passe.
+Les patients remplissent des formulaires avec des informations médicales:
+- un formulaire de santé générale (taille, poids, sympptômes, médicaments, consommation, activité physique)
+- un formulaire sur la fréquence d'apparition de symptômes de stress.
+Chaque utilisateur peut modifier son mot de passe et ses informations personnelles. Une suggestion de mot de passe respectant les contraintes de sécurité est proposée au moment de l'inscription et au moment de la modification du mot de passe.
+
+De plus, une partie intelligence artificielle (question answering) permet aux patients comme aux médecins de poser des questions sur le fonctionnement de l’application et d’obtenir une réponse en temps réel et à tout moment, sans attendre l’intervention d’un administrateur, remplaçant ainsi la présence d'une FAQ.
 
 ## Compétences visées
 
@@ -17,6 +24,7 @@ Ce projet met en œuvre les compétences suivantes :
 - Utilisation d'une base de données pour stocker les informations médicales
 - Implémentation d'un système de recommandation de mot de passe
 - Utilisation de Django pour le développement web
+- Mise à disposition d'un modèle d'intelligence artificielle
 
 ## Données (Schéma de la BDD)
 
@@ -26,7 +34,7 @@ Le schéma de la base de données utilise les informations des formulaires fourn
 *authentification_utilisateur.username = colstress.user_id = colsante.user_id*
 *authentification_medecinpatient.idMedecin_id et authentification_medecinpatient.idPatient_id = authentification_utilisateur.id*
 
-## Mini Tutoriel pour Installer le Projet sur un Poste et le Lancer
+## Installation du Projet
 
 ### Prérequis
 - Python installé sur votre machine
@@ -69,12 +77,13 @@ Le projet sera disponible à l'adresse [http://localhost:8000](http://localhost:
 *Page de modification du compte*
 
 
-## Versions Futures
+## Versions Futures et de Production
 
 La version actuelle met en place les fonctionnalités de base. Les versions futures pourraient inclure :
-- Ajout EDA et IA avec alertes
+- Ajout EDA (graphiques par patient, par tranches d'âge etc.) et alertes en cas de franchissement de seuil
 - Ajout CSS
-- Intégration de tests unitaires
 - Mise en place de l'envoi d'email avec indentifiants
 - Modification du mdp obligatoire à la première connexion
 - Gestion des fuseaux horaires, devises, mesures
+
+En production, dans l'idéal, les données d'authentification et les données médicales devront être stockées dans deux bases de données distinctes.

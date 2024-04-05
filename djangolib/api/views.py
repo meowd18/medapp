@@ -34,7 +34,8 @@ def qanda(request):
 
 
         # Renvoyer une réponse JSON avec les résultats
-        return render(request, "qanda.html", {"result": result})
+        return render(request, "qanda.html", {"result": result,
+                                              "question": question})
     else:
         #si la méthode n'est pas POST
         return render(request, "qanda.html", {"message": "Vous pouvez poser ici une question sur le fonctionnement de l'application."})
