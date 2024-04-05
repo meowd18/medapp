@@ -39,7 +39,7 @@ Ce projet met en œuvre les compétences suivantes :
 ## Données
 
 A terme (production), les données d'authentification et les données médicales devront être stockées dans deux bases de données distinctes comme indiqué sur ce schéma:
-![Capture d'écran 1](https://github.com/meowd18/medapp/blob/resolve/img/double_db.png)
+![Capture d'écran 1](https://github.com/meowd18/medapp/blob/resolve/img/double_db.jpg)
 *Schéma de la base de données*
 *authentification_utilisateur.username = colstress.user_id = colsante.user_id*
 *authentification_medecinpatient.idMedecin_id et authentification_medecinpatient.idPatient_id = authentification_utilisateur.id*
