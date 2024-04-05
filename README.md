@@ -40,8 +40,8 @@ Ce projet met en œuvre les compétences suivantes :
 
 A terme (production), les données d'authentification et les données médicales devront être stockées dans deux bases de données distinctes comme indiqué sur ce schéma:
 ![Capture d'écran 1](https://github.com/meowd18/medapp/blob/resolve/img/double_db.jpg)
-*Schéma de la base de données*
-*authentification_utilisateur.username = colstress.user_id = colsante.user_id*
+*Schéma de la base de données*  
+*authentification_utilisateur.username = colstress.user_id = colsante.user_id*  
 *authentification_medecinpatient.idMedecin_id et authentification_medecinpatient.idPatient_id = authentification_utilisateur.id*
 
 ## Installation du Projet
@@ -89,6 +89,12 @@ Le projet sera disponible à l'adresse [http://localhost:8000](http://localhost:
 ![Capture d'écran 5](https://github.com/meowd18/medapp/blob/resolve/img/q_and_a.png)
 *Page de question-réponse via IA*
 
+## Surveillance d'application
+
+La surveillance de l'application est effectuée à l'aide de MLflow, où les incidents d'accès à la base de données sont consignés lors de l'envoi d'un formulaire par un patient.  
+Pour accéder au tableau de bord MLflow, depuis le repertoire medapp exéctuez:  
+`mlflow ui --backend-store-uri sqlite:///mlflow.db`  
+et sélectionnez l'expérience nommée *database_access_monitoring*
 
 ## Versions Futures et de Production
 
