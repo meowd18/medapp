@@ -6,8 +6,13 @@
         <li>Formulaires
             <ul>
                 {% if user.role == "patient" %}
-                <li><a href="{% url 'data_sante' %}">Santé générale</a></li>
-                <li><a href="{% url 'data_stress' %}">Stress</a></li>
+                    {% if not block %}
+                    <li><a href="{% url 'data_sante' %}">Santé générale</a></li>
+                    <li><a href="{% url 'data_stress' %}">Stress</a></li>
+                    {% else %}
+                    <li>Santé générale - <span class="temp">temporairement indisponible</span></li>
+                    <li>Stress - <span class="temp">temporairement indisponible</span></li>
+                    {% endif %}
                 {% else %}
                 <li><a href="{% url 'sante_datatable' %}">Santé générale</a></li>
                 <li><a href="{% url 'stress_datatable' %}">Stress</a></li>
@@ -32,3 +37,9 @@
     </ul>
 </nav>
 
+<style>
+        .temp {
+            color: red;
+            font-weight: bold;
+        }
+    </style>

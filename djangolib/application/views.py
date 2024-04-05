@@ -69,9 +69,10 @@ def data_stress(request, prochainFormulaire_date_stress=None):
         if request.method == 'POST':
             form = ColStressForm(request.POST, initial=initial_data)
             if form.is_valid() and remplirProchainFormulaire:
-                message = handle_bug(form, form_name, prenom)
-                #connections['default'].settings_dict = connections['default'].settings_dict
-                return redirect(reverse('accueil') + f'?message={message}')  # Redirect to a confirmation page
+                message, block = handle_bug(form, form_name, prenom)
+                return render(request, 'accueil.html', {'message': message,
+                                                        'block': block,
+                                                        "prenom": prenom})  # Redirect to a confirmation page
             elif not remplirProchainFormulaire:
                 message = "Vous ne pouvez pas encore soumettre de réponse pour ce questionnaire"
         else:
@@ -125,9 +126,12 @@ def data_sante(request, prochainFormulaire_date_sante=None):
         if request.method == 'POST':
             form = ColSanteForm(request.POST, initial=initial_data)
             if form.is_valid() and remplirProchainFormulaire:
-                message = handle_bug(form, form_name, prenom)
-                return redirect(reverse('accueil') + f'?message={message}')  # Redirect to a confirmation page
-            elif not remplirProchainFormulaire:
+                message, block = handle_bug(form, form_name, prenom)
+                return render(request, 'accueil.html', {'message': message,
+                                                        'block': block,
+                                                        "prenom": prenom})  # Redirect to a confirmation page
+
+        elif not remplirProchainFormulaire:
                 message = "Vous ne pouvez pas encore soumettre de réponse pour ce questionnaire"
         else:
             form = ColSanteForm(initial=initial_data)
@@ -285,39 +289,3 @@ def edaia(request):
 #print(list(utilisateur.username for utilisateur in Utilisateur.objects.filter(role="medecin")))
 
 
-def alimentationPatients():
-    listePatients = pd.read_csv("https://raw.githubusercontent.com/data-IA-2022/Doctolib-_-Maud/main/data/listepat.csv")
-    for index, valeurs in listePatients.iterrows():
-        #champDBB = Utilisateur._meta.get_fields()
-
-        Utilisateur.objects.create_user(username = valeurs.username,
-                                        password = valeurs.password,
-                                        role="patient")
-def alimentationMedecin():
-    listeMedecins = pd.read_csv("https://raw.githubusercontent.com/data-IA-2022/Doctolib-_-Maud/main/data/listemed.csv")
-    for index, valeurs in listeMedecins.iterrows():
-        Utilisateur.objects.create_user(username = valeurs.username,
-                                        password = valeurs.password,
-                                        role="medecin")
-
-def modifier_role_superutilisateur():
-    # Cherche tous les superutilisateurs
-    superusers = Utilisateur.objects.filter(is_superuser=True)
-
-    # Modifie le rôle du superutilisateur en 'responsable'
-    for superuser in superusers:
-        superuser.role = 'responsable'
-        superuser.save()
-
-try:
-    modifier_role_superutilisateur()
-except OperationalError as e:
-    print(e)
-
-try:
-    if len(Utilisateur.objects.filter(role="patient")) == 0:
-        alimentationPatients()
-    if len(Utilisateur.objects.filter(role="medecin")) == 0:
-        alimentationMedecin()
-except OperationalError as e:
-    print(e)

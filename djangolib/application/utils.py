@@ -1,6 +1,8 @@
 import random, logging, mlflow, os, sqlite3, requests, traceback
 from django.db import connections, OperationalError, reset_queries, close_old_connections
 from django.conf import settings
+from authentification.models import Utilisateur, medecinPatient
+
 logging.basicConfig(level=logging.DEBUG)
 
 #initialisation de l'expérience sur serveur mlflow
@@ -63,7 +65,8 @@ def handle_bug(form, form_name, prenom):
             message = 'Un problème est survenu. Nos équipes tentent de la résoudre au plus vite. Toutes nos excuses pour la gêne occassionée.'
             send_alert_discord("Alerte base de donées", f":rotating_light: La base de données n'a pas été trouvée lors de l'envoi du formulaire {form_name} par le patient {prenom}."
                                                 f"\n Des mesures curatives doivent être prises au plus vite.")
-            return message
+            block = True
+            return message, block
         if not check_database_connection(cursor): #si la connexion est fermée
             #rouvrir la bdd
             reset_queries()
@@ -78,7 +81,8 @@ def handle_bug(form, form_name, prenom):
                 mlflow.log_param("form", form_name)
                 mlflow.log_param("user", prenom)
                 message = f'Votre formulaire concernant les données de {form_name} a bien été enregistré'
-                return message
+                block = False
+                return message, block
     except Exception as e:
         print(str(e))
         traceback.print_exc()
@@ -89,7 +93,7 @@ def handle_bug(form, form_name, prenom):
             mlflow.log_param("form", form_name)
             mlflow.log_param("user", prenom)
             message = f"Un problème est survenu lors de l'enregistrement de votre formulaire concernant les données de {form_name}, veuillez réessayer ultérieurement. Si l'erreur persiste, merci de contacter votre médecin traitant."
-            return message
+            return message, block
 
     finally:
         #dans tous les cas, on vérifie le seuil
@@ -179,3 +183,42 @@ def handle_bug(form, form_name, prenom):
             #générer le message d'alerte pour Discord
             send_alert_discord("Alerte MLflow", f"Le seuil d'échecs ({threshold} envois sur {metrics}) a été atteint."
                                                 f"\n Le ou les problèmes suivants ont causé l'alerte: {issue}")
+
+
+
+def alimentationPatients():
+    listePatients = pd.read_csv("https://raw.githubusercontent.com/data-IA-2022/Doctolib-_-Maud/main/data/listepat.csv")
+    for index, valeurs in listePatients.iterrows():
+        #champDBB = Utilisateur._meta.get_fields()
+
+        Utilisateur.objects.create_user(username = valeurs.username,
+                                        password = valeurs.password,
+                                        role="patient")
+def alimentationMedecin():
+    listeMedecins = pd.read_csv("https://raw.githubusercontent.com/data-IA-2022/Doctolib-_-Maud/main/data/listemed.csv")
+    for index, valeurs in listeMedecins.iterrows():
+        Utilisateur.objects.create_user(username = valeurs.username,
+                                        password = valeurs.password,
+                                        role="medecin")
+
+def modifier_role_superutilisateur():
+    # Cherche tous les superutilisateurs
+    superusers = Utilisateur.objects.filter(is_superuser=True)
+
+    # Modifie le rôle du superutilisateur en 'responsable'
+    for superuser in superusers:
+        superuser.role = 'responsable'
+        superuser.save()
+
+try:
+    modifier_role_superutilisateur()
+except OperationalError as e:
+    print(e)
+
+try:
+    if len(Utilisateur.objects.filter(role="patient")) == 0:
+        alimentationPatients()
+    if len(Utilisateur.objects.filter(role="medecin")) == 0:
+        alimentationMedecin()
+except OperationalError as e:
+    print(e)
