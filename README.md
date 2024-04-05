@@ -5,13 +5,23 @@
 
 Ce projet vise à créer une plateforme de gestion médicale permettant de recueillir des données de santé auprès de patients volontaires via deux formulaires, et ce à deux fins:
 - simplifier le suivi des patients inscrits
-- obtenir des données générales qui seront anonymisées et agrégées afin d'obtenir une vue d'ensemble de la santé en France.
-Un administrateur attribue des comptes aux médecins, peut consulter l'ensemble des patients inscrits ainsi que l'historique de leurs réponses aux formulaires dans un tableau avec filtres dynamiques, attribuer des rôles (médecin, patient, administrateur) et associer les patients à des médecins traitants.
+- obtenir des données générales qui seront anonymisées et agrégées afin d'obtenir une vue d'ensemble de la santé en France.  
+Un administrateur attribue des comptes aux médecins, peut consulter l'ensemble des patients inscrits ainsi que l'historique de leurs réponses aux formulaires dans un tableau avec filtres dynamiques, attribuer des rôles (médecin, patient, administrateur) et associer les patients à des médecins traitants.  
 Les médecins peuvent créer des comptes patients, mais pas les associer à un médecin. Ils peuvent voir l'historique des formulaires remplis par les patients qui leur sont associés dans un tableau avec filtres dynamiques, et modifier la périodicité à laquelle les patient doivent les remplir.
 Les patients remplissent des formulaires avec des informations médicales:
 - un formulaire de santé générale (taille, poids, sympptômes, médicaments, consommation, activité physique)
-- un formulaire sur la fréquence d'apparition de symptômes de stress.
-Chaque utilisateur peut modifier son mot de passe et ses informations personnelles. Une suggestion de mot de passe respectant les contraintes de sécurité est proposée au moment de l'inscription et au moment de la modification du mot de passe.
+- un formulaire sur la fréquence d'apparition de symptômes de stress, à remplir avec une note de 0 à 10:
+	- 0: Ce symptôme n’est pas apparu au cours des deux dernières semaines
+	- 1: Ce symptôme est apparu une ou deux fois seulement au cours des deux dernières semaines
+	- 5: Ce symptôme est apparu plusieurs fois au cours des deux dernières semaines
+	- 10: Ce symptôme est apparu presque continuellement au cours des deux dernières semaines.  
+
+Chaque utilisateur peut modifier son mot de passe et ses informations personnelles. Une suggestion de mot de passe respectant les contraintes de sécurité est proposée au moment de l'inscription et au moment de la modification du mot de passe. Les contraintes de sécurité sont les suivantes:
+- La longueur minimale du mot de passe est de 8 caractères.
+- Il doit contenir au moins une lettre minuscule (a-z).
+- Il doit contenir au moins une lettre majuscule (A-Z).
+- Il doit contenir au moins un chiffre (0-9).
+- Il doit contenir au moins un caractère spécial parmi !@#$%^&*()_+-.  
 
 De plus, une partie intelligence artificielle (question answering) permet aux patients comme aux médecins de poser des questions sur le fonctionnement de l’application et d’obtenir une réponse en temps réel et à tout moment, sans attendre l’intervention d’un administrateur, remplaçant ainsi la présence d'une FAQ.
 
@@ -26,10 +36,10 @@ Ce projet met en œuvre les compétences suivantes :
 - Utilisation de Django pour le développement web
 - Mise à disposition d'un modèle d'intelligence artificielle
 
-## Données (Schéma de la BDD)
+## Données
 
-Le schéma de la base de données utilise les informations des formulaires fournies par les patients.
-![Capture d'écran 1](https://github.com/data-IA-2022/Doctolib-_-Maud/blob/main/img/schema_bdd.png)
+A terme (production), les données d'authentification et les données médicales devront être stockées dans deux bases de données distinctes comme indiqué sur ce schéma:
+![Capture d'écran 1](https://github.com/meowd18/medapp/blob/resolve/img/double_db.png)
 *Schéma de la base de données*
 *authentification_utilisateur.username = colstress.user_id = colsante.user_id*
 *authentification_medecinpatient.idMedecin_id et authentification_medecinpatient.idPatient_id = authentification_utilisateur.id*
@@ -56,25 +66,28 @@ Le schéma de la base de données utilise les informations des formulaires fourn
 
 Le projet sera disponible à l'adresse [http://localhost:8000](http://localhost:8000). Connectez-vous avec le superutilisateur pour commencer.
 
-## Screenshots du Résultat Final
+## Apperçus
 
-![Capture d'écran 2](https://github.com/data-IA-2022/Doctolib-_-Maud/blob/main/img/association.png)
+![Capture d'écran 2](https://github.com/meowd18/medapp/blob/resolve/img/association.png)
 *Page d'association médecin/patient, admin VS médecin*
 
-![Capture d'écran 3](https://github.com/data-IA-2022/Doctolib-_-Maud/blob/main/img/nouveau_compte.png)
+![Capture d'écran 3](https://github.com/meowd18/medapp/blob/resolve/img/nouveau_compte.png)
 *Page de création d'un nouveau compte, admin VS médecin*
 
-![Capture d'écran 4](https://github.com/data-IA-2022/Doctolib-_-Maud/blob/main/img/sante_generale.png)
+![Capture d'écran 4](https://github.com/meowd18/medapp/blob/resolve/img/sante_generale.png)
 *Page du questionnaire de santé générale, patient VS médecin*
 
-![Capture d'écran 4](https://github.com/data-IA-2022/Doctolib-_-Maud/blob/main/img/stress.png)
+![Capture d'écran 4](https://github.com/meowd18/medapp/blob/resolve/img/stress.png)
 *Page du questionnaire de stress, patient VS médecin*
 
-![Capture d'écran 4](https://github.com/data-IA-2022/Doctolib-_-Maud/blob/main/img/historique.png)
+![Capture d'écran 4](https://github.com/meowd18/medapp/blob/resolve/img/historique.png)
 *Page de l'historique patient*
 
-![Capture d'écran 4](https://github.com/data-IA-2022/Doctolib-_-Maud/blob/main/img/mon_compte.png)
+![Capture d'écran 4](https://github.com/meowd18/medapp/blob/resolve/img/mon_compte.png)
 *Page de modification du compte*
+
+![Capture d'écran 5](https://github.com/meowd18/medapp/blob/resolve/img/q_and_a.png)
+*Page de question-réponse via IA*
 
 
 ## Versions Futures et de Production
@@ -86,4 +99,4 @@ La version actuelle met en place les fonctionnalités de base. Les versions futu
 - Modification du mdp obligatoire à la première connexion
 - Gestion des fuseaux horaires, devises, mesures
 
-En production, dans l'idéal, les données d'authentification et les données médicales devront être stockées dans deux bases de données distinctes.
+En développement, une seule base de données à été utilisées pour simplifier la gestion. Cependant, en production, les données d'authentification et les données médicales devront être stockées dans deux bases de données distinctes.
