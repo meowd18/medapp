@@ -39,7 +39,7 @@ Ce projet met en œuvre les compétences suivantes :
 
 ## Données
 
-![Database](https://github.com/meowd18/medapp/blob/resolve/img/double_db.jpg)
+![Database](https://github.com/meowd18/medapp/blob/resolve/img/double_db.png)
 *Schéma simplifié de la base de données*  
 *authentification_utilisateur.username = colstress.user_id = colsante.user_id*  
 *authentification_medecinpatient.idMedecin_id et authentification_medecinpatient.idPatient_id = authentification_utilisateur.id*
