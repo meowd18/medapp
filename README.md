@@ -35,6 +35,7 @@ Ce projet met en œuvre les compétences suivantes :
 - Implémentation d'un système de recommandation de mot de passe
 - Utilisation de Django pour le développement web
 - Mise à disposition d'un modèle d'intelligence artificielle
+- :new: Résolution d'incidents techniques
 
 ## Données
 
@@ -67,25 +68,25 @@ Le projet sera disponible à l'adresse [http://localhost:8000](http://localhost:
 
 ## Apperçus
 
-![Capture d'écran 2](https://github.com/meowd18/medapp/blob/resolve/img/association.png)
+![Capture d'écran 2](https://github.com/meowd18/medapp/blob/resolve/img/association.png)  
 *Page d'association médecin/patient, admin VS médecin*
 
-![Capture d'écran 3](https://github.com/meowd18/medapp/blob/resolve/img/nouveau_compte.png)
+![Capture d'écran 3](https://github.com/meowd18/medapp/blob/resolve/img/nouveau_compte.png)  
 *Page de création d'un nouveau compte, admin VS médecin*
 
-![Capture d'écran 4](https://github.com/meowd18/medapp/blob/resolve/img/sante_generale.png)
+![Capture d'écran 4](https://github.com/meowd18/medapp/blob/resolve/img/sante_generale.png)  
 *Page du questionnaire de santé générale, patient VS médecin*
 
-![Capture d'écran 4](https://github.com/meowd18/medapp/blob/resolve/img/stress.png)
+![Capture d'écran 4](https://github.com/meowd18/medapp/blob/resolve/img/stress.png)  
 *Page du questionnaire de stress, patient VS médecin*
 
-![Capture d'écran 4](https://github.com/meowd18/medapp/blob/resolve/img/historique.png)
+![Capture d'écran 4](https://github.com/meowd18/medapp/blob/resolve/img/historique.png)  
 *Page de l'historique patient*
 
-![Capture d'écran 4](https://github.com/meowd18/medapp/blob/resolve/img/mon_compte.png)
+![Capture d'écran 4](https://github.com/meowd18/medapp/blob/resolve/img/mon_compte.png)  
 *Page de modification du compte*
 
-![Capture d'écran 5](https://github.com/meowd18/medapp/blob/resolve/img/q_and_a.png)
+![Capture d'écran 5](https://github.com/meowd18/medapp/blob/resolve/img/q_and_a.png)  
 *Page de question-réponse via IA*
 
 ## Surveillance d'application
@@ -95,13 +96,16 @@ Pour accéder au tableau de bord MLflow, depuis le repertoire medapp exéctuez:
 `mlflow ui --backend-store-uri sqlite:///mlflow.db`  
 et sélectionnez l'expérience nommée *database_access_monitoring*
 
+Un graphique réalisé avec Metabase permet de voir l'évolution au cours du temps
+
+![Capture d'écran 5](https://github.com/meowd18/medapp/blob/resolve/img/metabase.png)  
+*Tentatives d'insertion des données dans la BDD*
+
 ## Versions Futures et de Production
 
 La version actuelle met en place les fonctionnalités de base. Les versions futures pourraient inclure :
-- Ajout EDA (graphiques par patient, par tranches d'âge etc.) et alertes en cas de franchissement de seuil
-- Ajout CSS
-- Mise en place de l'envoi d'email avec indentifiants
-- Modification du mdp obligatoire à la première connexion
-- Gestion des fuseaux horaires, devises, mesures
-
-En développement, une seule base de données à été utilisées pour simplifier la gestion. Cependant, en production, les données d'authentification et les données médicales devront être stockées dans deux bases de données distinctes.
+[ ] Ajout EDA (graphiques par patient, par tranches d'âge etc.) et alertes en cas de franchissement de seuil
+[ ] Ajout CSS
+[ ] Mise en place de l'envoi d'email avec indentifiants
+[ ] Modification du mdp obligatoire à la première connexion
+[ ] Gestion des fuseaux horaires, devises, mesures
