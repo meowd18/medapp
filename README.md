@@ -39,7 +39,7 @@ Ce projet met en œuvre les compétences suivantes :
 
 ## Données
 
-![Capture d'écran 1](https://github.com/meowd18/medapp/blob/resolve/img/double_db.jpg)
+![Database](https://github.com/meowd18/medapp/blob/resolve/img/double_db.jpg)
 *Schéma simplifié de la base de données*  
 *authentification_utilisateur.username = colstress.user_id = colsante.user_id*  
 *authentification_medecinpatient.idMedecin_id et authentification_medecinpatient.idPatient_id = authentification_utilisateur.id*
@@ -68,25 +68,25 @@ Le projet sera disponible à l'adresse [http://localhost:8000](http://localhost:
 
 ## Apperçus
 
-![Capture d'écran 2](https://github.com/meowd18/medapp/blob/resolve/img/association.png)  
+![Association](https://github.com/meowd18/medapp/blob/resolve/img/association.png)  
 *Page d'association médecin/patient, admin VS médecin*
 
-![Capture d'écran 3](https://github.com/meowd18/medapp/blob/resolve/img/nouveau_compte.png)  
+![Création_compte](https://github.com/meowd18/medapp/blob/resolve/img/nouveau_compte.png)  
 *Page de création d'un nouveau compte, admin VS médecin*
 
-![Capture d'écran 4](https://github.com/meowd18/medapp/blob/resolve/img/sante_generale.png)  
+![Santé_générale](https://github.com/meowd18/medapp/blob/resolve/img/sante_generale.png)  
 *Page du questionnaire de santé générale, patient VS médecin*
 
-![Capture d'écran 4](https://github.com/meowd18/medapp/blob/resolve/img/stress.png)  
+![Stress](https://github.com/meowd18/medapp/blob/resolve/img/stress.png)  
 *Page du questionnaire de stress, patient VS médecin*
 
-![Capture d'écran 4](https://github.com/meowd18/medapp/blob/resolve/img/historique.png)  
+![Historique](https://github.com/meowd18/medapp/blob/resolve/img/historique.png)  
 *Page de l'historique patient*
 
-![Capture d'écran 4](https://github.com/meowd18/medapp/blob/resolve/img/mon_compte.png)  
+![Compte](https://github.com/meowd18/medapp/blob/resolve/img/mon_compte.png)  
 *Page de modification du compte*
 
-![Capture d'écran 5](https://github.com/meowd18/medapp/blob/resolve/img/q_and_a.png)  
+![Q&A](https://github.com/meowd18/medapp/blob/resolve/img/q_and_a.png)  
 *Page de question-réponse via IA*
 
 ## Surveillance d'application
@@ -98,7 +98,7 @@ et sélectionnez l'expérience nommée *database_access_monitoring*
 
 Un graphique réalisé avec Metabase permet de voir l'évolution au cours du temps
 
-![Capture d'écran 5](https://github.com/meowd18/medapp/blob/resolve/img/metabase.png)  
+![Metabase](https://github.com/meowd18/medapp/blob/resolve/img/metabase.png)  
 *Tentatives d'insertion des données dans la BDD*
 
 ## Versions Futures et de Production
